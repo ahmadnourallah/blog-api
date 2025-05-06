@@ -31,4 +31,4 @@ const isAdmin = (req: Request, res: Response, next: NextFunction) => {
 	next();
 };
 
-export default { isAuthenticated, isAdmin };
+export { isAuthenticated, isAdmin };
