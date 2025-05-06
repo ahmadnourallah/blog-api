@@ -6247,7 +6247,6 @@ export namespace Prisma {
   }
 
   export type UserCreateInput = {
-    id: number
     name: string
     email: string
     password: string
@@ -6258,7 +6257,7 @@ export namespace Prisma {
   }
 
   export type UserUncheckedCreateInput = {
-    id: number
+    id?: number
     name: string
     email: string
     password: string
@@ -6269,7 +6268,6 @@ export namespace Prisma {
   }
 
   export type UserUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
@@ -6291,7 +6289,7 @@ export namespace Prisma {
   }
 
   export type UserCreateManyInput = {
-    id: number
+    id?: number
     name: string
     email: string
     password: string
@@ -6300,7 +6298,6 @@ export namespace Prisma {
   }
 
   export type UserUpdateManyMutationInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
@@ -6318,7 +6315,6 @@ export namespace Prisma {
   }
 
   export type PostCreateInput = {
-    id: number
     title: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -6328,7 +6324,7 @@ export namespace Prisma {
   }
 
   export type PostUncheckedCreateInput = {
-    id: number
+    id?: number
     title: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -6338,7 +6334,6 @@ export namespace Prisma {
   }
 
   export type PostUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6358,7 +6353,7 @@ export namespace Prisma {
   }
 
   export type PostCreateManyInput = {
-    id: number
+    id?: number
     title: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -6366,7 +6361,6 @@ export namespace Prisma {
   }
 
   export type PostUpdateManyMutationInput = {
-    id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6381,7 +6375,6 @@ export namespace Prisma {
   }
 
   export type CommentCreateInput = {
-    id: number
     content: string
     createdAt?: Date | string
     author: UserCreateNestedOneWithoutCommentsInput
@@ -6391,7 +6384,7 @@ export namespace Prisma {
   }
 
   export type CommentUncheckedCreateInput = {
-    id: number
+    id?: number
     content: string
     createdAt?: Date | string
     authorId: number
@@ -6401,7 +6394,6 @@ export namespace Prisma {
   }
 
   export type CommentUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: UserUpdateOneRequiredWithoutCommentsNestedInput
@@ -6421,7 +6413,7 @@ export namespace Prisma {
   }
 
   export type CommentCreateManyInput = {
-    id: number
+    id?: number
     content: string
     createdAt?: Date | string
     authorId: number
@@ -6430,7 +6422,6 @@ export namespace Prisma {
   }
 
   export type CommentUpdateManyMutationInput = {
-    id?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6445,19 +6436,17 @@ export namespace Prisma {
   }
 
   export type CategoryCreateInput = {
-    id: number
     name: string
     posts?: PostCreateNestedManyWithoutCategoriesInput
   }
 
   export type CategoryUncheckedCreateInput = {
-    id: number
+    id?: number
     name: string
     posts?: PostUncheckedCreateNestedManyWithoutCategoriesInput
   }
 
   export type CategoryUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     posts?: PostUpdateManyWithoutCategoriesNestedInput
   }
@@ -6469,12 +6458,11 @@ export namespace Prisma {
   }
 
   export type CategoryCreateManyInput = {
-    id: number
+    id?: number
     name: string
   }
 
   export type CategoryUpdateManyMutationInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
   }
 
@@ -6856,14 +6844,6 @@ export namespace Prisma {
     connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -6902,6 +6882,14 @@ export namespace Prisma {
     update?: CommentUpdateWithWhereUniqueWithoutAuthorInput | CommentUpdateWithWhereUniqueWithoutAuthorInput[]
     updateMany?: CommentUpdateManyWithWhereWithoutAuthorInput | CommentUpdateManyWithWhereWithoutAuthorInput[]
     deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type PostUncheckedUpdateManyWithoutAuthorNestedInput = {
@@ -7343,7 +7331,6 @@ export namespace Prisma {
   }
 
   export type PostCreateWithoutAuthorInput = {
-    id: number
     title: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -7352,7 +7339,7 @@ export namespace Prisma {
   }
 
   export type PostUncheckedCreateWithoutAuthorInput = {
-    id: number
+    id?: number
     title: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -7371,7 +7358,6 @@ export namespace Prisma {
   }
 
   export type CommentCreateWithoutAuthorInput = {
-    id: number
     content: string
     createdAt?: Date | string
     post: PostCreateNestedOneWithoutCommentsInput
@@ -7380,7 +7366,7 @@ export namespace Prisma {
   }
 
   export type CommentUncheckedCreateWithoutAuthorInput = {
-    id: number
+    id?: number
     content: string
     createdAt?: Date | string
     postId: number
@@ -7454,7 +7440,6 @@ export namespace Prisma {
   }
 
   export type UserCreateWithoutPostsInput = {
-    id: number
     name: string
     email: string
     password: string
@@ -7464,7 +7449,7 @@ export namespace Prisma {
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
-    id: number
+    id?: number
     name: string
     email: string
     password: string
@@ -7479,12 +7464,11 @@ export namespace Prisma {
   }
 
   export type CategoryCreateWithoutPostsInput = {
-    id: number
     name: string
   }
 
   export type CategoryUncheckedCreateWithoutPostsInput = {
-    id: number
+    id?: number
     name: string
   }
 
@@ -7494,7 +7478,6 @@ export namespace Prisma {
   }
 
   export type CommentCreateWithoutPostInput = {
-    id: number
     content: string
     createdAt?: Date | string
     author: UserCreateNestedOneWithoutCommentsInput
@@ -7503,7 +7486,7 @@ export namespace Prisma {
   }
 
   export type CommentUncheckedCreateWithoutPostInput = {
-    id: number
+    id?: number
     content: string
     createdAt?: Date | string
     authorId: number
@@ -7533,7 +7516,6 @@ export namespace Prisma {
   }
 
   export type UserUpdateWithoutPostsInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
@@ -7593,7 +7575,6 @@ export namespace Prisma {
   }
 
   export type UserCreateWithoutCommentsInput = {
-    id: number
     name: string
     email: string
     password: string
@@ -7603,7 +7584,7 @@ export namespace Prisma {
   }
 
   export type UserUncheckedCreateWithoutCommentsInput = {
-    id: number
+    id?: number
     name: string
     email: string
     password: string
@@ -7618,7 +7599,6 @@ export namespace Prisma {
   }
 
   export type PostCreateWithoutCommentsInput = {
-    id: number
     title: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -7627,7 +7607,7 @@ export namespace Prisma {
   }
 
   export type PostUncheckedCreateWithoutCommentsInput = {
-    id: number
+    id?: number
     title: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -7641,7 +7621,6 @@ export namespace Prisma {
   }
 
   export type CommentCreateWithoutRepliesInput = {
-    id: number
     content: string
     createdAt?: Date | string
     author: UserCreateNestedOneWithoutCommentsInput
@@ -7650,7 +7629,7 @@ export namespace Prisma {
   }
 
   export type CommentUncheckedCreateWithoutRepliesInput = {
-    id: number
+    id?: number
     content: string
     createdAt?: Date | string
     authorId: number
@@ -7664,7 +7643,6 @@ export namespace Prisma {
   }
 
   export type CommentCreateWithoutParentCommentInput = {
-    id: number
     content: string
     createdAt?: Date | string
     author: UserCreateNestedOneWithoutCommentsInput
@@ -7673,7 +7651,7 @@ export namespace Prisma {
   }
 
   export type CommentUncheckedCreateWithoutParentCommentInput = {
-    id: number
+    id?: number
     content: string
     createdAt?: Date | string
     authorId: number
@@ -7703,7 +7681,6 @@ export namespace Prisma {
   }
 
   export type UserUpdateWithoutCommentsInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
@@ -7734,7 +7711,6 @@ export namespace Prisma {
   }
 
   export type PostUpdateWithoutCommentsInput = {
-    id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7763,7 +7739,6 @@ export namespace Prisma {
   }
 
   export type CommentUpdateWithoutRepliesInput = {
-    id?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: UserUpdateOneRequiredWithoutCommentsNestedInput
@@ -7797,7 +7772,6 @@ export namespace Prisma {
   }
 
   export type PostCreateWithoutCategoriesInput = {
-    id: number
     title: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -7806,7 +7780,7 @@ export namespace Prisma {
   }
 
   export type PostUncheckedCreateWithoutCategoriesInput = {
-    id: number
+    id?: number
     title: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -7836,14 +7810,14 @@ export namespace Prisma {
   }
 
   export type PostCreateManyAuthorInput = {
-    id: number
+    id?: number
     title: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type CommentCreateManyAuthorInput = {
-    id: number
+    id?: number
     content: string
     createdAt?: Date | string
     postId: number
@@ -7851,7 +7825,6 @@ export namespace Prisma {
   }
 
   export type PostUpdateWithoutAuthorInput = {
-    id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7876,7 +7849,6 @@ export namespace Prisma {
   }
 
   export type CommentUpdateWithoutAuthorInput = {
-    id?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     post?: PostUpdateOneRequiredWithoutCommentsNestedInput
@@ -7902,7 +7874,7 @@ export namespace Prisma {
   }
 
   export type CommentCreateManyPostInput = {
-    id: number
+    id?: number
     content: string
     createdAt?: Date | string
     authorId: number
@@ -7910,7 +7882,6 @@ export namespace Prisma {
   }
 
   export type CategoryUpdateWithoutPostsInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
   }
 
@@ -7925,7 +7896,6 @@ export namespace Prisma {
   }
 
   export type CommentUpdateWithoutPostInput = {
-    id?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: UserUpdateOneRequiredWithoutCommentsNestedInput
@@ -7951,7 +7921,7 @@ export namespace Prisma {
   }
 
   export type CommentCreateManyParentCommentInput = {
-    id: number
+    id?: number
     content: string
     createdAt?: Date | string
     authorId: number
@@ -7959,7 +7929,6 @@ export namespace Prisma {
   }
 
   export type CommentUpdateWithoutParentCommentInput = {
-    id?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: UserUpdateOneRequiredWithoutCommentsNestedInput
@@ -7985,7 +7954,6 @@ export namespace Prisma {
   }
 
   export type PostUpdateWithoutCategoriesInput = {
-    id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
