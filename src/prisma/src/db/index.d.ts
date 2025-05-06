@@ -2470,6 +2470,7 @@ export namespace Prisma {
   export type PostMinAggregateOutputType = {
     id: number | null
     title: string | null
+    content: string | null
     createdAt: Date | null
     updatedAt: Date | null
     authorId: number | null
@@ -2478,6 +2479,7 @@ export namespace Prisma {
   export type PostMaxAggregateOutputType = {
     id: number | null
     title: string | null
+    content: string | null
     createdAt: Date | null
     updatedAt: Date | null
     authorId: number | null
@@ -2486,6 +2488,7 @@ export namespace Prisma {
   export type PostCountAggregateOutputType = {
     id: number
     title: number
+    content: number
     createdAt: number
     updatedAt: number
     authorId: number
@@ -2506,6 +2509,7 @@ export namespace Prisma {
   export type PostMinAggregateInputType = {
     id?: true
     title?: true
+    content?: true
     createdAt?: true
     updatedAt?: true
     authorId?: true
@@ -2514,6 +2518,7 @@ export namespace Prisma {
   export type PostMaxAggregateInputType = {
     id?: true
     title?: true
+    content?: true
     createdAt?: true
     updatedAt?: true
     authorId?: true
@@ -2522,6 +2527,7 @@ export namespace Prisma {
   export type PostCountAggregateInputType = {
     id?: true
     title?: true
+    content?: true
     createdAt?: true
     updatedAt?: true
     authorId?: true
@@ -2617,6 +2623,7 @@ export namespace Prisma {
   export type PostGroupByOutputType = {
     id: number
     title: string
+    content: string
     createdAt: Date
     updatedAt: Date
     authorId: number
@@ -2644,6 +2651,7 @@ export namespace Prisma {
   export type PostSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
+    content?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     authorId?: boolean
@@ -2656,6 +2664,7 @@ export namespace Prisma {
   export type PostSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
+    content?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     authorId?: boolean
@@ -2665,6 +2674,7 @@ export namespace Prisma {
   export type PostSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
+    content?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     authorId?: boolean
@@ -2674,12 +2684,13 @@ export namespace Prisma {
   export type PostSelectScalar = {
     id?: boolean
     title?: boolean
+    content?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     authorId?: boolean
   }
 
-  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "createdAt" | "updatedAt" | "authorId", ExtArgs["result"]["post"]>
+  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "createdAt" | "updatedAt" | "authorId", ExtArgs["result"]["post"]>
   export type PostInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     author?: boolean | UserDefaultArgs<ExtArgs>
     categories?: boolean | Post$categoriesArgs<ExtArgs>
@@ -2703,6 +2714,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       title: string
+      content: string
       createdAt: Date
       updatedAt: Date
       authorId: number
@@ -3134,6 +3146,7 @@ export namespace Prisma {
   interface PostFieldRefs {
     readonly id: FieldRef<"Post", 'Int'>
     readonly title: FieldRef<"Post", 'String'>
+    readonly content: FieldRef<"Post", 'String'>
     readonly createdAt: FieldRef<"Post", 'DateTime'>
     readonly updatedAt: FieldRef<"Post", 'DateTime'>
     readonly authorId: FieldRef<"Post", 'Int'>
@@ -5875,6 +5888,7 @@ export namespace Prisma {
   export const PostScalarFieldEnum: {
     id: 'id',
     title: 'title',
+    content: 'content',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     authorId: 'authorId'
@@ -6076,6 +6090,7 @@ export namespace Prisma {
     NOT?: PostWhereInput | PostWhereInput[]
     id?: IntFilter<"Post"> | number
     title?: StringFilter<"Post"> | string
+    content?: StringFilter<"Post"> | string
     createdAt?: DateTimeFilter<"Post"> | Date | string
     updatedAt?: DateTimeFilter<"Post"> | Date | string
     authorId?: IntFilter<"Post"> | number
@@ -6087,6 +6102,7 @@ export namespace Prisma {
   export type PostOrderByWithRelationInput = {
     id?: SortOrder
     title?: SortOrder
+    content?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     authorId?: SortOrder
@@ -6101,6 +6117,7 @@ export namespace Prisma {
     AND?: PostWhereInput | PostWhereInput[]
     OR?: PostWhereInput[]
     NOT?: PostWhereInput | PostWhereInput[]
+    content?: StringFilter<"Post"> | string
     createdAt?: DateTimeFilter<"Post"> | Date | string
     updatedAt?: DateTimeFilter<"Post"> | Date | string
     authorId?: IntFilter<"Post"> | number
@@ -6112,6 +6129,7 @@ export namespace Prisma {
   export type PostOrderByWithAggregationInput = {
     id?: SortOrder
     title?: SortOrder
+    content?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     authorId?: SortOrder
@@ -6128,6 +6146,7 @@ export namespace Prisma {
     NOT?: PostScalarWhereWithAggregatesInput | PostScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Post"> | number
     title?: StringWithAggregatesFilter<"Post"> | string
+    content?: StringWithAggregatesFilter<"Post"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
     authorId?: IntWithAggregatesFilter<"Post"> | number
@@ -6316,6 +6335,7 @@ export namespace Prisma {
 
   export type PostCreateInput = {
     title: string
+    content: string
     createdAt?: Date | string
     updatedAt?: Date | string
     author: UserCreateNestedOneWithoutPostsInput
@@ -6326,6 +6346,7 @@ export namespace Prisma {
   export type PostUncheckedCreateInput = {
     id?: number
     title: string
+    content: string
     createdAt?: Date | string
     updatedAt?: Date | string
     authorId: number
@@ -6335,6 +6356,7 @@ export namespace Prisma {
 
   export type PostUpdateInput = {
     title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
@@ -6345,6 +6367,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: IntFieldUpdateOperationsInput | number
@@ -6355,6 +6378,7 @@ export namespace Prisma {
   export type PostCreateManyInput = {
     id?: number
     title: string
+    content: string
     createdAt?: Date | string
     updatedAt?: Date | string
     authorId: number
@@ -6362,6 +6386,7 @@ export namespace Prisma {
 
   export type PostUpdateManyMutationInput = {
     title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6369,6 +6394,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: IntFieldUpdateOperationsInput | number
@@ -6670,6 +6696,7 @@ export namespace Prisma {
   export type PostCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
+    content?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     authorId?: SortOrder
@@ -6683,6 +6710,7 @@ export namespace Prisma {
   export type PostMaxOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
+    content?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     authorId?: SortOrder
@@ -6691,6 +6719,7 @@ export namespace Prisma {
   export type PostMinOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
+    content?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     authorId?: SortOrder
@@ -7332,6 +7361,7 @@ export namespace Prisma {
 
   export type PostCreateWithoutAuthorInput = {
     title: string
+    content: string
     createdAt?: Date | string
     updatedAt?: Date | string
     categories?: CategoryCreateNestedManyWithoutPostsInput
@@ -7341,6 +7371,7 @@ export namespace Prisma {
   export type PostUncheckedCreateWithoutAuthorInput = {
     id?: number
     title: string
+    content: string
     createdAt?: Date | string
     updatedAt?: Date | string
     categories?: CategoryUncheckedCreateNestedManyWithoutPostsInput
@@ -7406,6 +7437,7 @@ export namespace Prisma {
     NOT?: PostScalarWhereInput | PostScalarWhereInput[]
     id?: IntFilter<"Post"> | number
     title?: StringFilter<"Post"> | string
+    content?: StringFilter<"Post"> | string
     createdAt?: DateTimeFilter<"Post"> | Date | string
     updatedAt?: DateTimeFilter<"Post"> | Date | string
     authorId?: IntFilter<"Post"> | number
@@ -7600,6 +7632,7 @@ export namespace Prisma {
 
   export type PostCreateWithoutCommentsInput = {
     title: string
+    content: string
     createdAt?: Date | string
     updatedAt?: Date | string
     author: UserCreateNestedOneWithoutPostsInput
@@ -7609,6 +7642,7 @@ export namespace Prisma {
   export type PostUncheckedCreateWithoutCommentsInput = {
     id?: number
     title: string
+    content: string
     createdAt?: Date | string
     updatedAt?: Date | string
     authorId: number
@@ -7712,6 +7746,7 @@ export namespace Prisma {
 
   export type PostUpdateWithoutCommentsInput = {
     title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
@@ -7721,6 +7756,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateWithoutCommentsInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: IntFieldUpdateOperationsInput | number
@@ -7773,6 +7809,7 @@ export namespace Prisma {
 
   export type PostCreateWithoutCategoriesInput = {
     title: string
+    content: string
     createdAt?: Date | string
     updatedAt?: Date | string
     author: UserCreateNestedOneWithoutPostsInput
@@ -7782,6 +7819,7 @@ export namespace Prisma {
   export type PostUncheckedCreateWithoutCategoriesInput = {
     id?: number
     title: string
+    content: string
     createdAt?: Date | string
     updatedAt?: Date | string
     authorId: number
@@ -7812,6 +7850,7 @@ export namespace Prisma {
   export type PostCreateManyAuthorInput = {
     id?: number
     title: string
+    content: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -7826,6 +7865,7 @@ export namespace Prisma {
 
   export type PostUpdateWithoutAuthorInput = {
     title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     categories?: CategoryUpdateManyWithoutPostsNestedInput
@@ -7835,6 +7875,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateWithoutAuthorInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     categories?: CategoryUncheckedUpdateManyWithoutPostsNestedInput
@@ -7844,6 +7885,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateManyWithoutAuthorInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7955,6 +7997,7 @@ export namespace Prisma {
 
   export type PostUpdateWithoutCategoriesInput = {
     title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
@@ -7964,6 +8007,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateWithoutCategoriesInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: IntFieldUpdateOperationsInput | number
@@ -7973,6 +8017,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateManyWithoutCategoriesInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: IntFieldUpdateOperationsInput | number
