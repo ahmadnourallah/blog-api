@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
-import { body, validationResult } from "express-validator";
+import { body } from "express-validator";
 import { PrismaClient, User } from "../prisma/src/db/index";
 import { issueJWT } from "../utils/crypto";
 import { AppError } from "../middleware/error.middleware";
+import { validateResults } from "../utils/validation";
 import bcryptjs from "bcryptjs";
 
 const prisma = new PrismaClient();
@@ -33,19 +34,6 @@ const validateLogin = () => [
 	body("email").trim().notEmpty().withMessage("Email cannot be empty"),
 	body("password").trim().notEmpty().withMessage("Password cannot be empty"),
 ];
-
-const validateResults = (req: Request) => {
-	const errors = validationResult(req);
-
-	if (!errors.isEmpty())
-		throw new AppError(
-			422,
-			errors
-				.formatWith(({ msg }) => msg)
-				.array()
-				.join("\n")
-		);
-};
 
 const register = async (req: Request, res: Response) => {
 	validateResults(req);
