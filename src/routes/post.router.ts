@@ -12,4 +12,12 @@ router.post(
 	postController.createPost
 );
 
+router.put(
+	"/:postId",
+	isAuthenticated,
+	isAdmin,
+	postController.validatePost(true),
+	postController.updatePost
+);
+
 export default router;
