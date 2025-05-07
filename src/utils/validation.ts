@@ -54,79 +54,72 @@ const validateQueries = () => [
 		.withMessage("Order must be asc or desc"),
 ];
 
-const validatePost = (validateId = false) => {
-	const chain = [
-		body("title")
-			.trim()
-			.escape()
-			.notEmpty()
-			.withMessage("Tile cannot be empty")
-			.isString()
-			.withMessage("Title must be a string")
-			.custom(async (title, { req }) => {
-				const postExists = await prisma.post.findFirst({
-					where: { id: { not: req?.params?.postId }, title },
-				});
+const validatePost = (validateId = false) => [
+	body("title")
+		.trim()
+		.escape()
+		.notEmpty()
+		.withMessage("Tile cannot be empty")
+		.isString()
+		.withMessage("Title must be a string")
+		.custom(async (title, { req }) => {
+			const postExists = await prisma.post.findFirst({
+				where: { id: { not: req?.params?.postId }, title },
+			});
 
-				if (postExists) throw new Error("Title must be unique");
-			}),
-		body("content")
-			.trim()
-			.escape()
-			.notEmpty()
-			.withMessage("Content cannot be empty")
-			.isString()
-			.withMessage("Content must be a string"),
-		body("authorId")
-			.trim()
-			.escape()
-			.notEmpty()
-			.withMessage("Author's id cannot be empty")
-			.bail()
-			.toInt()
-			.isNumeric()
-			.withMessage("Author's id must be a number")
-			.bail()
-			.custom(async (authorId) => {
-				const userExists = await prisma.user.findUnique({
-					where: { id: authorId },
-				});
+			if (postExists) throw new Error("Title must be unique");
+		}),
+	body("content")
+		.trim()
+		.escape()
+		.notEmpty()
+		.withMessage("Content cannot be empty")
+		.isString()
+		.withMessage("Content must be a string"),
+	body("authorId")
+		.trim()
+		.escape()
+		.notEmpty()
+		.withMessage("Author's id cannot be empty")
+		.bail()
+		.toInt()
+		.isNumeric()
+		.withMessage("Author's id must be a number")
+		.bail()
+		.custom(async (authorId) => {
+			const userExists = await prisma.user.findUnique({
+				where: { id: authorId },
+			});
 
-				if (!userExists) throw new Error("Author does not exist");
-			}),
-		body("categories")
-			.trim()
-			.escape()
-			.optional()
-			.toArray()
-			.isArray()
-			.withMessage("Categories must be an array"),
-	];
+			if (!userExists) throw new Error("Author does not exist");
+		}),
+	body("categories")
+		.trim()
+		.escape()
+		.optional()
+		.toArray()
+		.isArray()
+		.withMessage("Categories must be an array"),
+];
 
-	if (validateId) {
-		chain.unshift(
-			param("postId")
-				.trim()
-				.escape()
-				.notEmpty()
-				.withMessage("Post's id cannot be empty")
-				.bail()
-				.toInt()
-				.isNumeric()
-				.withMessage("Post's id must be a number")
-				.bail()
-				.custom(async (postId) => {
-					const postExists = await prisma.post.findUnique({
-						where: { id: postId },
-					});
+const validatePostId = () =>
+	param("postId")
+		.trim()
+		.escape()
+		.notEmpty()
+		.withMessage("Post's id cannot be empty")
+		.bail()
+		.toInt()
+		.isNumeric()
+		.withMessage("Post's id must be a number")
+		.bail()
+		.custom(async (postId) => {
+			const postExists = await prisma.post.findUnique({
+				where: { id: postId },
+			});
 
-					if (!postExists) throw new Error("Post does not exist");
-				})
-		);
-	}
-
-	return chain;
-};
+			if (!postExists) throw new Error("Post does not exist");
+		});
 
 const validateResults = (req: Request) => {
 	const errors = validationResult(req);
@@ -143,4 +136,4 @@ const validateResults = (req: Request) => {
 	return matchedData(req);
 };
 
-export { validateResults, validateQueries, validatePost };
+export { validateResults, validateQueries, validatePost, validatePostId };

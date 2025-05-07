@@ -1,6 +1,10 @@
 import { Router } from "express";
 import { isAuthenticated, isAdmin } from "../middleware/auth.middleware";
-import { validateQueries, validatePost } from "../utils/validation";
+import {
+	validateQueries,
+	validatePost,
+	validatePostId,
+} from "../utils/validation";
 import postController from "../controllers/post.controller";
 
 const router = Router();
@@ -19,6 +23,7 @@ router.put(
 	"/:postId",
 	isAuthenticated,
 	isAdmin,
+	validatePostId(),
 	validatePost(true),
 	postController.updatePost
 );
