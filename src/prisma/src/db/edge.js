@@ -187,11 +187,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DB_URL",
-        "value": "postgresql://ahmadnourallah:danteddff@localhost:5432/"
+        "value": null
       }
     }
   },
