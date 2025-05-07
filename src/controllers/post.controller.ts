@@ -5,6 +5,32 @@ import { validateResults } from "../utils/validation";
 
 const prisma = new PrismaClient();
 
+const getPosts = async (req: Request, res: Response) => {
+	validateResults(req);
+
+	const { start, end, search, orderBy, order } = matchedData(req);
+
+	const posts = await prisma.post.findMany({
+		where: {
+			OR: [
+				{ title: { contains: search } },
+				{ content: { contains: search } },
+			],
+		},
+		skip: start,
+		take: end - start,
+		orderBy: {
+			[orderBy === "title" ? "title" : "createdAt"]: order,
+		},
+		include: {
+			author: { select: { name: true, email: true, bio: true } },
+			categories: true,
+		},
+	});
+
+	res.status(200).send({ count: posts.length, data: posts });
+};
+
 const validatePost = (validateId = false) => {
 	const chain = [
 		body("title")
@@ -161,4 +187,4 @@ const updatePost = async (req: Request, res: Response) => {
 	res.status(201).json({ success: true, data: post });
 };
 
-export default { validatePost, createPost, updatePost };
+export default { getPosts, validatePost, createPost, updatePost };
