@@ -9,15 +9,7 @@ import postController from "../controllers/post.controller";
 
 const router = Router();
 
-router.post(
-	"/",
-	isAuthenticated,
-	isAdmin,
-	validatePost(),
-	postController.createPost
-);
-
-router.get("/", validateQueries(), postController.getPosts);
+router.get("/:postId", validatePostId(), postController.getPost);
 
 router.put(
 	"/:postId",
@@ -27,5 +19,15 @@ router.put(
 	validatePost(true),
 	postController.updatePost
 );
+
+router.post(
+	"/",
+	isAuthenticated,
+	isAdmin,
+	validatePost(),
+	postController.createPost
+);
+
+router.get("/", validateQueries(), postController.getPosts);
 
 export default router;

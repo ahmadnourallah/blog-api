@@ -28,6 +28,21 @@ const getPosts = async (req: Request, res: Response) => {
 	res.status(200).send({ count: posts.length, data: posts });
 };
 
+const getPost = async (req: Request, res: Response) => {
+	const { postId } = validateResults(req);
+
+	const post = await prisma.post.findUnique({
+		where: { id: postId },
+		include: {
+			author: { select: { name: true, email: true, bio: true } },
+			categories: true,
+			comments: true,
+		},
+	});
+
+	res.status(200).send({ data: post });
+};
+
 const createPost = async (req: Request, res: Response) => {
 	const { title, content, authorId, categories } = validateResults(req);
 
@@ -107,4 +122,4 @@ const updatePost = async (req: Request, res: Response) => {
 	res.status(201).json({ success: true, data: post });
 };
 
-export default { getPosts, createPost, updatePost };
+export default { getPosts, getPost, createPost, updatePost };
