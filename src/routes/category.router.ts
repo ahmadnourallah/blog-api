@@ -5,6 +5,7 @@ import {
 	validateCategoryId,
 } from "../utils/validation";
 import categoryController from "../controllers/category.controller";
+import { isAdmin, isAuthenticated } from "../middleware/auth.middleware";
 
 const router = Router();
 
@@ -13,8 +14,22 @@ router.get(
 	validateCategoryId(),
 	categoryController.getCategory
 );
+router.put(
+	"/:categoryId",
+	isAuthenticated,
+	isAdmin,
+	validateCategoryId(),
+	validateCategory(true),
+	categoryController.updateCategory
+);
 router.get("/", validateQueries(), categoryController.getCategories);
 router.get("/", validateQueries(), categoryController.getCategories);
-router.post("/", validateCategory(), categoryController.createCategory);
+router.post(
+	"/",
+	isAuthenticated,
+	isAdmin,
+	validateCategory(),
+	categoryController.createCategory
+);
 
 export default router;

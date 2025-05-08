@@ -62,8 +62,56 @@ const createCategory = async (req: Request, res: Response) => {
 	res.status(201).json({ success: true, data: category });
 };
 
+const updateCategory = async (req: Request, res: Response) => {
+	const { categoryId, name, posts } = validateResults(req);
+
+	let newPosts;
+	let excludedPosts;
+
+	if (posts) {
+		newPosts = posts.map((post: string) => {
+			return { title: post };
+		});
+
+		const category = await prisma.category.findUnique({
+			where: { id: categoryId },
+			select: { posts: { select: { title: true } } },
+		});
+
+		excludedPosts = category?.posts.filter(
+			(post) => !posts.includes(post.title)
+		);
+	}
+
+	const category = await prisma.category.update({
+		where: {
+			id: categoryId,
+		},
+		data: {
+			name,
+			posts: {
+				connect: newPosts,
+				disconnect: excludedPosts,
+			},
+		},
+		include: {
+			_count: { select: { posts: true } },
+		},
+	});
+
+	res.status(201).send({
+		data: {
+			id: category?.id,
+			name: category?.name,
+			createdAt: category?.createdAt,
+			postCount: category?._count.posts,
+		},
+	});
+};
+
 export default {
 	getCategories,
 	getCategory,
 	createCategory,
+	updateCategory,
 };
