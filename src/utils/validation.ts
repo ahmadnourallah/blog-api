@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { NextFunction, Request, Response } from "express";
 import { AppError } from "../middleware/error.middleware";
 import {
 	validationResult,
@@ -102,7 +102,7 @@ const validatePost = (validateId = false) => [
 		.withMessage("Categories must be an array"),
 ];
 
-const validatePostId = () =>
+const validatePostId = () => [
 	param("postId")
 		.trim()
 		.escape()
@@ -112,14 +112,17 @@ const validatePostId = () =>
 		.toInt()
 		.isNumeric()
 		.withMessage("Post's id must be a number")
-		.bail()
-		.custom(async (postId) => {
-			const postExists = await prisma.post.findUnique({
-				where: { id: postId },
-			});
+		.bail(),
 
-			if (!postExists) throw new Error("Post does not exist");
+	async (req: Request, res: Response, next: NextFunction) => {
+		const postExists = await prisma.post.findUnique({
+			where: { id: req?.params?.postId as unknown as number },
 		});
+
+		if (!postExists) throw new AppError(404, "Post does not exist");
+		next();
+	},
+];
 
 const validateResults = (req: Request) => {
 	const errors = validationResult(req);
