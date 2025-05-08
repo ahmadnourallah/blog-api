@@ -124,6 +124,42 @@ const validatePostId = () => [
 	},
 ];
 
+const validateCategory = (validateId = false) => [
+	body("name")
+		.trim()
+		.escape()
+		.notEmpty()
+		.withMessage("Category cannot be empty")
+		.bail()
+		.isString()
+		.withMessage("Category must be a string")
+		.bail()
+		.custom(async (name, { req }) => {
+			const categoryExists = await prisma.category.findFirst({
+				where: { id: { not: req?.params?.categoryId }, name },
+			});
+
+			if (categoryExists) throw new Error("Category must be unique");
+		}),
+	body("posts")
+		.trim()
+		.escape()
+		.optional()
+		.toArray()
+		.isArray()
+		.withMessage("Posts must be an array of titles")
+		.bail()
+		.custom(async (posts) => {
+			for (let post of posts) {
+				const postExists = await prisma.post.findUnique({
+					where: { title: post },
+				});
+
+				if (!postExists) throw new Error("Some posts don't exist");
+			}
+		}),
+];
+
 const validateResults = (req: Request) => {
 	const errors = validationResult(req);
 
@@ -139,4 +175,10 @@ const validateResults = (req: Request) => {
 	return matchedData(req);
 };
 
-export { validateResults, validateQueries, validatePost, validatePostId };
+export {
+	validateResults,
+	validateQueries,
+	validatePost,
+	validatePostId,
+	validateCategory,
+};
