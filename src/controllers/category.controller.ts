@@ -21,6 +21,28 @@ const getCategories = async (req: Request, res: Response) => {
 	res.status(200).send({ count: categories.length, data: categories });
 };
 
+const createCategory = async (req: Request, res: Response) => {
+	const { name, posts } = validateResults(req);
+
+	const newPosts =
+		posts &&
+		posts.map((post: string) => {
+			return { title: post };
+		});
+
+	const category = await prisma.category.create({
+		data: {
+			name,
+			posts: {
+				connect: newPosts,
+			},
+		},
+	});
+
+	res.status(201).json({ success: true, data: category });
+};
+
 export default {
 	getCategories,
+	createCategory,
 };
