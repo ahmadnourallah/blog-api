@@ -160,6 +160,28 @@ const validateCategory = (validateId = false) => [
 		}),
 ];
 
+const validateCategoryId = () => [
+	param("categoryId")
+		.trim()
+		.escape()
+		.notEmpty()
+		.withMessage("Category's id cannot be empty")
+		.bail()
+		.toInt()
+		.isNumeric()
+		.withMessage("Category's id must be a number")
+		.bail(),
+
+	async (req: Request, res: Response, next: NextFunction) => {
+		const categoryExists = await prisma.category.findUnique({
+			where: { id: req?.params?.categoryId as unknown as number },
+		});
+
+		if (!categoryExists) throw new AppError(404, "Category does not exist");
+		next();
+	},
+];
+
 const validateResults = (req: Request) => {
 	const errors = validationResult(req);
 
@@ -181,4 +203,5 @@ export {
 	validatePost,
 	validatePostId,
 	validateCategory,
+	validateCategoryId,
 };
