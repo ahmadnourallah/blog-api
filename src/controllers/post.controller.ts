@@ -122,4 +122,12 @@ const updatePost = async (req: Request, res: Response) => {
 	res.status(201).json({ success: true, data: post });
 };
 
-export default { getPosts, getPost, createPost, updatePost };
+const deletePost = async (req: Request, res: Response) => {
+	const { postId } = validateResults(req);
+
+	await prisma.post.delete({ where: { id: postId } });
+
+	res.status(201).json({ success: true, data: {} });
+};
+
+export default { getPosts, getPost, createPost, updatePost, deletePost };

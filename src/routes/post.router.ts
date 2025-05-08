@@ -20,6 +20,14 @@ router.put(
 	postController.updatePost
 );
 
+router.delete(
+	"/:postId",
+	isAuthenticated,
+	isAdmin,
+	validatePostId(),
+	postController.deletePost
+);
+
 router.post(
 	"/",
 	isAuthenticated,
