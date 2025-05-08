@@ -59,7 +59,7 @@ const validatePost = (validateId = false) => [
 		.trim()
 		.escape()
 		.notEmpty()
-		.withMessage("Tile cannot be empty")
+		.withMessage("Title cannot be empty")
 		.isString()
 		.withMessage("Title must be a string")
 		.custom(async (title, { req }) => {
