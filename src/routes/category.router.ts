@@ -15,6 +15,13 @@ router.get(
 	categoryController.getCategory
 );
 
+router.get(
+	"/:categoryId/posts",
+	validateCategoryId(),
+	validateQueries(),
+	categoryController.getCategoryPosts
+);
+
 router.put(
 	"/:categoryId",
 	isAuthenticated,

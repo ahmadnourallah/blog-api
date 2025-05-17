@@ -41,6 +41,36 @@ const getCategory = async (req: Request, res: Response) => {
 	});
 };
 
+const getCategoryPosts = async (req: Request, res: Response) => {
+	const { start, end, search, order, orderBy, categoryId } =
+		validateResults(req);
+
+	const posts = await prisma.post.findMany({
+		where: {
+			categories: {
+				some: {
+					id: categoryId,
+				},
+			},
+			OR: [
+				{ title: { contains: search } },
+				{ content: { contains: search } },
+			],
+		},
+		skip: start,
+		take: end - start,
+		orderBy: {
+			[orderBy === "title" ? "title" : "createdAt"]: order,
+		},
+		include: {
+			author: { select: { name: true, email: true, bio: true } },
+			categories: { select: { id: true, name: true } },
+		},
+	});
+
+	res.status(200).send({ count: posts.length, data: posts });
+};
+
 const createCategory = async (req: Request, res: Response) => {
 	const { name, posts } = validateResults(req);
 
@@ -120,6 +150,7 @@ const deleteCategory = async (req: Request, res: Response) => {
 export default {
 	getCategories,
 	getCategory,
+	getCategoryPosts,
 	createCategory,
 	updateCategory,
 	deleteCategory,
