@@ -109,9 +109,18 @@ const updateCategory = async (req: Request, res: Response) => {
 	});
 };
 
+const deleteCategory = async (req: Request, res: Response) => {
+	const { categoryId } = validateResults(req);
+
+	await prisma.category.delete({ where: { id: categoryId } });
+
+	res.status(201).json({ success: true, data: {} });
+};
+
 export default {
 	getCategories,
 	getCategory,
 	createCategory,
 	updateCategory,
+	deleteCategory,
 };

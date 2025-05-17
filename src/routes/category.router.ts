@@ -14,6 +14,7 @@ router.get(
 	validateCategoryId(),
 	categoryController.getCategory
 );
+
 router.put(
 	"/:categoryId",
 	isAuthenticated,
@@ -23,7 +24,15 @@ router.put(
 	categoryController.updateCategory
 );
 router.get("/", validateQueries(), categoryController.getCategories);
-router.get("/", validateQueries(), categoryController.getCategories);
+
+router.delete(
+	"/:categoryId",
+	isAuthenticated,
+	isAdmin,
+	validateCategoryId(),
+	categoryController.deleteCategory
+);
+
 router.post(
 	"/",
 	isAuthenticated,
