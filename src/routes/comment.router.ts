@@ -14,9 +14,16 @@ router.get("/:commentId", validateCommentId(), commentController.getComment);
 router.put(
 	"/:commentId",
 	isAuthenticated,
-	validateCommentId(),
+	validateCommentId(true),
 	validateComment(),
 	commentController.updateComment
+);
+
+router.delete(
+	"/:commentId",
+	isAuthenticated,
+	validateCommentId(true),
+	commentController.deleteComment
 );
 
 router.get("/", validateQueries(), commentController.getComments);

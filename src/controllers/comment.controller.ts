@@ -75,9 +75,18 @@ const updateComment = async (req: Request, res: Response) => {
 	res.status(201).send({ data: comment });
 };
 
+const deleteComment = async (req: Request, res: Response) => {
+	const { commentId } = validateResults(req);
+
+	await prisma.comment.delete({ where: { id: commentId } });
+
+	res.status(201).json({ success: true, data: {} });
+};
+
 export default {
 	getComments,
 	getComment,
 	createComment,
 	updateComment,
+	deleteComment,
 };
