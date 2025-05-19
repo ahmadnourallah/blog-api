@@ -16,7 +16,7 @@ const getUsers = async (req: Request, res: Response) => {
 		orderBy: {
 			name: order,
 		},
-		select: { id: true, name: true, email: true, bio: true },
+		select: { id: true, name: true, email: true, role: true, bio: true },
 	});
 
 	res.status(200).send({
@@ -30,10 +30,18 @@ const getUser = async (req: Request, res: Response) => {
 
 	const user = await prisma.user.findUnique({
 		where: { id: userId },
-		select: { id: true, name: true, email: true, bio: true },
+		select: { id: true, name: true, email: true, role: true, bio: true },
 	});
 
 	res.status(200).send({ status: "success", data: { user } });
 };
 
-export default { getUsers, getUser };
+const deleteUser = async (req: Request, res: Response) => {
+	const { userId } = validateResults(req);
+
+	await prisma.user.delete({ where: { id: userId } });
+
+	res.status(201).json({ status: "success", data: null });
+};
+
+export default { getUsers, getUser, deleteUser };

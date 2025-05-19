@@ -14,6 +14,14 @@ router.get(
 	userController.getUser
 );
 
+router.delete(
+	"/:userId",
+	isAuthenticated,
+	isAdmin,
+	validateUserId(),
+	userController.deleteUser
+);
+
 router.get(
 	"/",
 	isAuthenticated,
