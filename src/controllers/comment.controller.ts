@@ -50,8 +50,34 @@ const createComment = async (req: Request, res: Response) => {
 	res.status(201).json({ success: true, data: comment });
 };
 
+const updateComment = async (req: Request, res: Response) => {
+	const { commentId, content, authorId, postId, parentCommentId } =
+		validateResults(req);
+
+	const comment = await prisma.comment.update({
+		where: {
+			id: commentId,
+		},
+
+		data: {
+			content,
+			author: { connect: { id: authorId } },
+			post: { connect: { id: postId } },
+			parentComment:
+				parentCommentId !== undefined
+					? { connect: { id: parentCommentId } }
+					: undefined,
+		},
+
+		include: { replies: true },
+	});
+
+	res.status(201).send({ data: comment });
+};
+
 export default {
 	getComments,
 	getComment,
 	createComment,
+	updateComment,
 };

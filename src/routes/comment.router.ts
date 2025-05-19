@@ -11,6 +11,14 @@ const router = Router();
 
 router.get("/:commentId", validateCommentId(), commentController.getComment);
 
+router.put(
+	"/:commentId",
+	isAuthenticated,
+	validateCommentId(),
+	validateComment(),
+	commentController.updateComment
+);
+
 router.get("/", validateQueries(), commentController.getComments);
 
 router.post(
