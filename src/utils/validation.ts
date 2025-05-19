@@ -315,6 +315,29 @@ const validateCommentId = (validateUser = false) => [
 	},
 ];
 
+const validateUserId = () => [
+	param("userId")
+		.trim()
+		.escape()
+		.notEmpty()
+		.withMessage("User's id cannot be empty")
+		.bail()
+		.toInt()
+		.isNumeric()
+		.withMessage("User's id must be a number")
+		.bail(),
+
+	async (req: Request, res: Response, next: NextFunction) => {
+		const userExists = await prisma.user.findUnique({
+			where: { id: req?.params?.userId as unknown as number },
+		});
+
+		if (!userExists)
+			throw new ClientError({ userId: "User does not exist" }, 404);
+		next();
+	},
+];
+
 const validateResults = (req: Request) => {
 	const errors = validationResult(req);
 	if (!errors.isEmpty())
@@ -340,4 +363,5 @@ export {
 	validateCategoryId,
 	validateComment,
 	validateCommentId,
+	validateUserId,
 };
