@@ -36,11 +36,32 @@ const getPost = async (req: Request, res: Response) => {
 		include: {
 			author: { select: { name: true, email: true, bio: true } },
 			categories: true,
-			comments: true,
 		},
 	});
 
 	res.status(200).send({ data: post });
+};
+
+const getPostComments = async (req: Request, res: Response) => {
+	const { postId, start, end, search, order } = validateResults(req);
+
+	const comments = await prisma.comment.findMany({
+		where: {
+			post: { id: postId },
+			content: { contains: search },
+		},
+		skip: start,
+		take: end - start,
+		orderBy: {
+			createdAt: order,
+		},
+		include: {
+			author: { select: { name: true, email: true } },
+			replies: true,
+		},
+	});
+
+	res.status(200).send({ count: comments.length, data: comments });
 };
 
 const createPost = async (req: Request, res: Response) => {
@@ -130,4 +151,11 @@ const deletePost = async (req: Request, res: Response) => {
 	res.status(201).json({ success: true, data: {} });
 };
 
-export default { getPosts, getPost, createPost, updatePost, deletePost };
+export default {
+	getPosts,
+	getPost,
+	getPostComments,
+	createPost,
+	updatePost,
+	deletePost,
+};

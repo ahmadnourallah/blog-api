@@ -28,6 +28,13 @@ router.delete(
 	postController.deletePost
 );
 
+router.get(
+	"/:postId/comments",
+	validatePostId(),
+	validateQueries(),
+	postController.getPostComments
+);
+
 router.post(
 	"/",
 	isAuthenticated,
