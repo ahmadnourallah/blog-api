@@ -1,27 +1,56 @@
 import { Request, Response, NextFunction } from "express";
 
-class AppError extends Error {
+class ServerError extends Error {
 	public code;
 
-	constructor(code: number, message: string) {
+	constructor(message: string, code: number = 422) {
 		super(message);
 		this.code = code;
 	}
 }
 
-const errorHandler = (
-	err: AppError,
+class ClientError extends Error {
+	public code;
+	public errors;
+
+	constructor(
+		errors: { [key: string]: string } | { [key: string]: string }[],
+		code: number = 422,
+		message: string = ""
+	) {
+		super(message);
+		this.code = code;
+		this.errors = errors;
+	}
+}
+
+const dataErrorHandler = (
+	err: ClientError,
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
-	res.status(err.code || 500).json({
-		error: {
-			code: err.code || 500,
-			message:
-				err instanceof AppError ? err.message : "Internal server error",
-		},
+	if (err instanceof ClientError)
+		res.status(err.code).json({
+			status: "fail",
+			code: err.code,
+			data: err.errors,
+		});
+
+	next(err);
+};
+
+const serverErrorHandler = (
+	err: ServerError,
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	res.status(err.code).json({
+		status: "error",
+		code: err.code,
+		message: "Internal server error",
 	});
 };
 
-export { errorHandler as default, AppError };
+export { serverErrorHandler, dataErrorHandler, ServerError, ClientError };
