@@ -242,6 +242,28 @@ const validateComment = () => [
 		}),
 ];
 
+const validateCommentId = () => [
+	param("commentId")
+		.trim()
+		.escape()
+		.notEmpty()
+		.withMessage("Comment's id cannot be empty")
+		.bail()
+		.toInt()
+		.isNumeric()
+		.withMessage("Comment's id must be a number")
+		.bail(),
+
+	async (req: Request, res: Response, next: NextFunction) => {
+		const commentExists = await prisma.comment.findUnique({
+			where: { id: req?.params?.commentId as unknown as number },
+		});
+
+		if (!commentExists) throw new AppError(404, "Comment does not exist");
+		next();
+	},
+];
+
 const validateResults = (req: Request) => {
 	const errors = validationResult(req);
 
@@ -265,4 +287,5 @@ export {
 	validateCategory,
 	validateCategoryId,
 	validateComment,
+	validateCommentId,
 };
