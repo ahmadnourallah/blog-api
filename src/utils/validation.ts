@@ -11,6 +11,33 @@ import { PrismaClient } from "../prisma/src/db/index";
 
 const prisma = new PrismaClient();
 
+const validateRegister = () => [
+	body("name").trim().escape().notEmpty().withMessage("Name cannot be empty"),
+	body("email")
+		.trim()
+		.escape()
+		.notEmpty()
+		.withMessage("Email cannot be empty")
+		.isEmail()
+		.withMessage("Email must be valid"),
+	body("password")
+		.trim()
+		.escape()
+		.notEmpty()
+		.withMessage("Password cannot be empty")
+		.isLength({ min: 8, max: 16 })
+		.withMessage("Password must be between 8-16 characters")
+		.matches("[0-9]")
+		.withMessage("Password must contain a number")
+		.matches("(?=.*?[#@$?])")
+		.withMessage("Password must contain a special character"),
+];
+
+const validateLogin = () => [
+	body("email").trim().notEmpty().withMessage("Email cannot be empty"),
+	body("password").trim().notEmpty().withMessage("Password cannot be empty"),
+];
+
 const validateQueries = () => [
 	query("start")
 		.default(0)
@@ -303,6 +330,8 @@ const validateResults = (req: Request) => {
 };
 
 export {
+	validateLogin,
+	validateRegister,
 	validateResults,
 	validateQueries,
 	validatePost,
