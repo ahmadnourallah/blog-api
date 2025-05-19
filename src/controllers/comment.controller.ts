@@ -26,7 +26,10 @@ const getComment = async (req: Request, res: Response) => {
 
 	const comment = await prisma.comment.findUnique({
 		where: { id: commentId },
-		include: { replies: true },
+		include: {
+			author: { select: { name: true, email: true } },
+			replies: true,
+		},
 	});
 
 	res.status(200).send({ data: comment });
