@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "../prisma/src/db";
 import { validateResults } from "../utils/validation";
+import { connect } from "http2";
 
 const prisma = new PrismaClient();
 
@@ -21,6 +22,25 @@ const getComments = async (req: Request, res: Response) => {
 	res.status(200).send({ count: comments.length, data: comments });
 };
 
+const createComment = async (req: Request, res: Response) => {
+	const { content, authorId, postId, parentCommentId } = validateResults(req);
+
+	const comment = await prisma.comment.create({
+		data: {
+			content,
+			author: { connect: { id: authorId } },
+			post: { connect: { id: postId } },
+			parentComment:
+				parentCommentId !== undefined
+					? { connect: { id: parentCommentId } }
+					: undefined,
+		},
+	});
+
+	res.status(201).json({ success: true, data: comment });
+};
+
 export default {
 	getComments,
+	createComment,
 };
