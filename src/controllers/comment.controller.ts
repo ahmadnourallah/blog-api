@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "../prisma/src/db";
 import { validateResults } from "../utils/validation";
-import { connect } from "http2";
 
 const prisma = new PrismaClient();
 
@@ -20,6 +19,17 @@ const getComments = async (req: Request, res: Response) => {
 	});
 
 	res.status(200).send({ count: comments.length, data: comments });
+};
+
+const getComment = async (req: Request, res: Response) => {
+	const { commentId } = validateResults(req);
+
+	const comment = await prisma.comment.findUnique({
+		where: { id: commentId },
+		include: { replies: true },
+	});
+
+	res.status(200).send({ data: comment });
 };
 
 const createComment = async (req: Request, res: Response) => {
@@ -42,5 +52,6 @@ const createComment = async (req: Request, res: Response) => {
 
 export default {
 	getComments,
+	getComment,
 	createComment,
 };

@@ -1,9 +1,15 @@
 import { Router } from "express";
-import { validateQueries, validateComment } from "../utils/validation";
+import {
+	validateQueries,
+	validateComment,
+	validateCommentId,
+} from "../utils/validation";
 import { isAuthenticated } from "../middleware/auth.middleware";
 import commentController from "../controllers/comment.controller";
 
 const router = Router();
+
+router.get("/:commentId", validateCommentId(), commentController.getComment);
 
 router.get("/", validateQueries(), commentController.getComments);
 
