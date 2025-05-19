@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { AppError } from "../middleware/error.middleware";
+import { ClientError } from "../middleware/error.middleware";
 import {
 	validationResult,
 	query,
@@ -119,7 +119,8 @@ const validatePostId = () => [
 			where: { id: req?.params?.postId as unknown as number },
 		});
 
-		if (!postExists) throw new AppError(404, "Post does not exist");
+		if (!postExists)
+			throw new ClientError({ postId: "Post does not exist" }, 404);
 		next();
 	},
 ];
@@ -177,7 +178,11 @@ const validateCategoryId = () => [
 			where: { id: req?.params?.categoryId as unknown as number },
 		});
 
-		if (!categoryExists) throw new AppError(404, "Category does not exist");
+		if (!categoryExists)
+			throw new ClientError(
+				{ categoryId: "Category does not exist" },
+				404
+			);
 		next();
 	},
 ];
@@ -237,9 +242,18 @@ const validateComment = () => [
 			});
 
 			if (!userExists) throw new Error("Author does not exist");
-			if (authorId !== req.user.id && req.user.role !== "ADMIN")
-				throw new Error("User is not logged in");
 		}),
+
+	async (req: Request, res: Response, next: NextFunction) => {
+		if (
+			req?.body?.authorId !== req?.user?.id &&
+			req?.user?.role !== "ADMIN"
+		)
+			throw new ClientError(
+				{ authorId: "Action is not authorized" },
+				403
+			);
+	},
 ];
 
 const validateCommentId = (validateUser = false) => [
@@ -259,27 +273,30 @@ const validateCommentId = (validateUser = false) => [
 			where: { id: req?.params?.commentId as unknown as number },
 		});
 
-		if (!commentExists) throw new AppError(404, "Comment does not exist");
+		if (!commentExists)
+			throw new ClientError({ commentId: "Comment does not exist" }, 404);
 		if (
 			validateUser &&
 			commentExists?.authorId !== req?.user?.id &&
 			req?.user?.role !== "ADMIN"
 		)
-			throw new AppError(403, "Action is not authorized");
+			throw new ClientError(
+				{ authorId: "Action is not authorized" },
+				403
+			);
 		next();
 	},
 ];
 
 const validateResults = (req: Request) => {
 	const errors = validationResult(req);
-
 	if (!errors.isEmpty())
-		throw new AppError(
-			422,
+		throw new ClientError(
 			errors
-				.formatWith(({ msg }) => msg)
+				.formatWith(({ path, msg }) => {
+					return { [path]: msg };
+				})
 				.array()
-				.join("\n")
 		);
 
 	return matchedData(req);
