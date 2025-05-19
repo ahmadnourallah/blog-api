@@ -182,6 +182,66 @@ const validateCategoryId = () => [
 	},
 ];
 
+const validateComment = () => [
+	body("content")
+		.trim()
+		.escape()
+		.notEmpty()
+		.withMessage("Content cannot be empty")
+		.isString()
+		.withMessage("Content must be a string"),
+	body("postId")
+		.trim()
+		.escape()
+		.notEmpty()
+		.withMessage("Post's id cannot be empty")
+		.bail()
+		.toInt()
+		.isNumeric()
+		.withMessage("Post's id must be a number")
+		.bail()
+		.custom(async (postId) => {
+			const postExists = await prisma.post.findUnique({
+				where: { id: postId },
+			});
+
+			if (!postExists) throw new Error("Post does not exist");
+		}),
+	body("parentCommentId")
+		.optional()
+		.toInt()
+		.isNumeric()
+		.withMessage("parent comment's id must be a number")
+		.bail()
+		.custom(async (parentCommentId) => {
+			const parentCommentExists = await prisma.comment.findUnique({
+				where: { id: parentCommentId },
+			});
+
+			if (!parentCommentExists)
+				throw new Error("Parent comment does not exist");
+		}),
+	body("authorId")
+		.trim()
+		.escape()
+		.notEmpty()
+		.withMessage("Author's id cannot be empty")
+		.bail()
+		.toInt()
+		.isNumeric()
+		.withMessage("Author's id must be a number")
+		.bail()
+		.custom(async (authorId, { req }) => {
+			const userExists = await prisma.user.findUnique({
+				where: { id: authorId },
+			});
+
+			if (!userExists) throw new Error("Author does not exist");
+			if (authorId !== req.user.id && req.user.role !== "ADMIN")
+				throw new Error("User is not logged in");
+		}),
+];
+
 const validateResults = (req: Request) => {
 	const errors = validationResult(req);
 
@@ -204,4 +264,5 @@ export {
 	validatePostId,
 	validateCategory,
 	validateCategoryId,
+	validateComment,
 };
