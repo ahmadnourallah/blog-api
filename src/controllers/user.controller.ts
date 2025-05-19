@@ -25,4 +25,15 @@ const getUsers = async (req: Request, res: Response) => {
 	});
 };
 
-export default { getUsers };
+const getUser = async (req: Request, res: Response) => {
+	const { userId } = validateResults(req);
+
+	const user = await prisma.user.findUnique({
+		where: { id: userId },
+		select: { id: true, name: true, email: true, bio: true },
+	});
+
+	res.status(200).send({ status: "success", data: { user } });
+};
+
+export default { getUsers, getUser };
