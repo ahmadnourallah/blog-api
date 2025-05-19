@@ -242,7 +242,7 @@ const validateComment = () => [
 		}),
 ];
 
-const validateCommentId = () => [
+const validateCommentId = (validateUser = false) => [
 	param("commentId")
 		.trim()
 		.escape()
@@ -260,6 +260,12 @@ const validateCommentId = () => [
 		});
 
 		if (!commentExists) throw new AppError(404, "Comment does not exist");
+		if (
+			validateUser &&
+			commentExists?.authorId !== req?.user?.id &&
+			req?.user?.role !== "ADMIN"
+		)
+			throw new AppError(403, "Action is not authorized");
 		next();
 	},
 ];
