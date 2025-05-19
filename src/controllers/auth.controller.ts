@@ -46,20 +46,13 @@ const register = async (req: Request, res: Response) => {
 	const hashedPassword = await bcryptjs.hash(password, 10);
 
 	const user = await prisma.user.create({
-		data: { name, email, password: hashedPassword } as User,
+		data: { name, email, password: hashedPassword },
+		select: { id: true, name: true, email: true, role: true },
 	});
 
 	const token = issueJWT(user);
 
-	res.json({
-		user: {
-			id: user.id,
-			name: user.name,
-			email: user.email,
-			role: user.role,
-		},
-		token,
-	});
+	res.json({ status: "success", data: { user, token } });
 };
 
 const login = async (req: Request, res: Response) => {
@@ -67,22 +60,17 @@ const login = async (req: Request, res: Response) => {
 
 	const { email, password } = req.body;
 
-	const user = await prisma.user.findUnique({ where: { email } });
+	const user = await prisma.user.findUnique({
+		where: { email },
+		select: { id: true, name: true, email: true, role: true },
+	});
 	const doesMatch = bcryptjs.compare(user?.password || "", password);
 
 	if (!user || !doesMatch) throw new AppError(401, "Wrong email or password");
 
 	const token = issueJWT(user);
 
-	res.json({
-		user: {
-			id: user.id,
-			name: user.name,
-			email: user.email,
-			role: user.role,
-		},
-		token,
-	});
+	res.json({ status: "success", data: { user, token } });
 };
 
 export default {

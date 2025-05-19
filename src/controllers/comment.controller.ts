@@ -18,7 +18,10 @@ const getComments = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(200).send({ count: comments.length, data: comments });
+	res.status(200).send({
+		status: "success",
+		data: { count: comments.length, comments },
+	});
 };
 
 const getComment = async (req: Request, res: Response) => {
@@ -32,7 +35,7 @@ const getComment = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(200).send({ data: comment });
+	res.status(200).send({ status: "success", data: { comment } });
 };
 
 const createComment = async (req: Request, res: Response) => {
@@ -50,7 +53,7 @@ const createComment = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(201).json({ success: true, data: comment });
+	res.status(201).json({ status: "success", data: { comment } });
 };
 
 const updateComment = async (req: Request, res: Response) => {
@@ -75,7 +78,7 @@ const updateComment = async (req: Request, res: Response) => {
 		include: { replies: true },
 	});
 
-	res.status(201).send({ data: comment });
+	res.status(201).send({ status: "success", data: { comment } });
 };
 
 const deleteComment = async (req: Request, res: Response) => {
@@ -83,7 +86,7 @@ const deleteComment = async (req: Request, res: Response) => {
 
 	await prisma.comment.delete({ where: { id: commentId } });
 
-	res.status(201).json({ success: true, data: {} });
+	res.status(201).json({ status: "success", data: null });
 };
 
 export default {

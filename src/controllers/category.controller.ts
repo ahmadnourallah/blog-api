@@ -18,7 +18,10 @@ const getCategories = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(200).send({ count: categories.length, data: categories });
+	res.status(200).send({
+		status: "success",
+		data: { count: categories.length, categories },
+	});
 };
 
 const getCategory = async (req: Request, res: Response) => {
@@ -31,14 +34,7 @@ const getCategory = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(200).send({
-		data: {
-			id: category?.id,
-			name: category?.name,
-			createdAt: category?.createdAt,
-			postCount: category?._count.posts,
-		},
-	});
+	res.status(200).send({ status: "success", data: { category } });
 };
 
 const getCategoryPosts = async (req: Request, res: Response) => {
@@ -68,7 +64,10 @@ const getCategoryPosts = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(200).send({ count: posts.length, data: posts });
+	res.status(200).send({
+		status: "success",
+		data: { count: posts.length, posts },
+	});
 };
 
 const createCategory = async (req: Request, res: Response) => {
@@ -89,7 +88,7 @@ const createCategory = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(201).json({ success: true, data: category });
+	res.status(201).json({ status: "success", data: { category } });
 };
 
 const updateCategory = async (req: Request, res: Response) => {
@@ -124,19 +123,15 @@ const updateCategory = async (req: Request, res: Response) => {
 				disconnect: excludedPosts,
 			},
 		},
-		include: {
+		select: {
+			id: true,
+			name: true,
+			createdAt: true,
 			_count: { select: { posts: true } },
 		},
 	});
 
-	res.status(201).send({
-		data: {
-			id: category?.id,
-			name: category?.name,
-			createdAt: category?.createdAt,
-			postCount: category?._count.posts,
-		},
-	});
+	res.status(201).send({ status: "success", data: { category } });
 };
 
 const deleteCategory = async (req: Request, res: Response) => {
@@ -144,7 +139,7 @@ const deleteCategory = async (req: Request, res: Response) => {
 
 	await prisma.category.delete({ where: { id: categoryId } });
 
-	res.status(201).json({ success: true, data: {} });
+	res.status(201).json({ status: "success", data: null });
 };
 
 export default {

@@ -25,7 +25,10 @@ const getPosts = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(200).send({ count: posts.length, data: posts });
+	res.status(200).send({
+		status: "success",
+		data: { count: posts.length, posts },
+	});
 };
 
 const getPost = async (req: Request, res: Response) => {
@@ -39,7 +42,7 @@ const getPost = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(200).send({ data: post });
+	res.status(200).send({ status: "success", data: { post } });
 };
 
 const getPostComments = async (req: Request, res: Response) => {
@@ -61,7 +64,10 @@ const getPostComments = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(200).send({ count: comments.length, data: comments });
+	res.status(200).send({
+		status: "success",
+		data: { count: comments.length, comments },
+	});
 };
 
 const createPost = async (req: Request, res: Response) => {
@@ -92,7 +98,7 @@ const createPost = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(201).json({ success: true, data: post });
+	res.status(201).json({ status: "success", data: { post } });
 };
 
 const updatePost = async (req: Request, res: Response) => {
@@ -140,7 +146,7 @@ const updatePost = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(201).json({ success: true, data: post });
+	res.status(201).json({ status: "success", data: { post } });
 };
 
 const deletePost = async (req: Request, res: Response) => {
@@ -148,7 +154,7 @@ const deletePost = async (req: Request, res: Response) => {
 
 	await prisma.post.delete({ where: { id: postId } });
 
-	res.status(201).json({ success: true, data: {} });
+	res.status(201).json({ status: "success", data: null });
 };
 
 export default {
