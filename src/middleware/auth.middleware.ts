@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { AppError } from "./error.middleware";
+import { ClientError } from "./error.middleware";
 import { User as PrismaUser } from "../prisma/src/db";
 import passport from "passport";
 
@@ -16,7 +16,11 @@ const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
 		(err: Error, user: any, info: string) => {
 			if (err) next(err);
 
-			if (!user) throw new AppError(403, "User is not authenticated");
+			if (!user)
+				throw new ClientError(
+					{ user: "User is not authenticated" },
+					403
+				);
 
 			req.user = user;
 			next();
@@ -26,7 +30,7 @@ const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
 
 const isAdmin = (req: Request, res: Response, next: NextFunction) => {
 	if (req?.user?.role !== "ADMIN")
-		throw new AppError(403, "User is not authorized");
+		throw new ClientError({ user: "User is not authorized" }, 403);
 
 	next();
 };
