@@ -19,7 +19,13 @@ const validateUser = () => [
 		.notEmpty()
 		.withMessage("Email cannot be empty")
 		.isEmail()
-		.withMessage("Email must be valid"),
+		.withMessage("Email must be valid")
+		.custom(async (email, { req }) => {
+			const userExists = await prisma.user.findFirst({
+				where: { id: { not: req?.params?.userId }, email },
+			});
+			if (userExists) throw new Error("Email already exists");
+		}),
 	body("password")
 		.trim()
 		.escape()
