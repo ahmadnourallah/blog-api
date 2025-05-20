@@ -11,7 +11,7 @@ import { PrismaClient } from "../prisma/src/db/index";
 
 const prisma = new PrismaClient();
 
-const validateRegister = () => [
+const validateUser = () => [
 	body("name").trim().escape().notEmpty().withMessage("Name cannot be empty"),
 	body("email")
 		.trim()
@@ -354,7 +354,7 @@ const validateResults = (req: Request) => {
 
 export {
 	validateLogin,
-	validateRegister,
+	validateUser,
 	validateResults,
 	validateQueries,
 	validatePost,
