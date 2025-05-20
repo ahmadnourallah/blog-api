@@ -24,7 +24,7 @@ class ClientError extends Error {
 	}
 }
 
-const dataErrorHandler = (
+const clientErrorHandler = (
 	err: ClientError,
 	req: Request,
 	res: Response,
@@ -53,4 +53,4 @@ const serverErrorHandler = (
 	});
 };
 
-export { serverErrorHandler, dataErrorHandler, ServerError, ClientError };
+export { serverErrorHandler, clientErrorHandler, ServerError, ClientError };
