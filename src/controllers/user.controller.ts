@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "../prisma/src/db";
 import { validateResults } from "../utils/validation";
+import bcryptjs from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -36,6 +37,18 @@ const getUser = async (req: Request, res: Response) => {
 	res.status(200).send({ status: "success", data: { user } });
 };
 
+const updateUserRole = async (req: Request, res: Response) => {
+	const { userId, role } = validateResults(req);
+
+	const user = await prisma.user.update({
+		where: { id: userId },
+		data: { role },
+		select: { id: true, name: true, email: true, role: true },
+	});
+
+	res.status(201).send({ status: "success", data: { user } });
+};
+
 const deleteUser = async (req: Request, res: Response) => {
 	const { userId } = validateResults(req);
 
@@ -44,4 +57,4 @@ const deleteUser = async (req: Request, res: Response) => {
 	res.status(201).json({ status: "success", data: null });
 };
 
-export default { getUsers, getUser, deleteUser };
+export default { getUsers, getUser, updateUserRole, deleteUser };

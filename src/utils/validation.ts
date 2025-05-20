@@ -39,6 +39,18 @@ const validateUser = () => [
 		.withMessage("Password must contain a special character"),
 ];
 
+const validateUserRole = () => [
+	body("role")
+		.trim()
+		.escape()
+		.notEmpty()
+		.withMessage("Role cannot be empty")
+		.isString()
+		.withMessage("Role must be a string")
+		.custom((role) => role === "ADMIN" || role === "VISITOR")
+		.withMessage("Role must be ADMIN or VISITOR"),
+];
+
 const validateLogin = () => [
 	body("email").trim().notEmpty().withMessage("Email cannot be empty"),
 	body("password").trim().notEmpty().withMessage("Password cannot be empty"),
@@ -359,8 +371,10 @@ const validateResults = (req: Request) => {
 };
 
 export {
-	validateLogin,
 	validateUser,
+	validateUserRole,
+	validateUserId,
+	validateLogin,
 	validateResults,
 	validateQueries,
 	validatePost,
@@ -369,5 +383,4 @@ export {
 	validateCategoryId,
 	validateComment,
 	validateCommentId,
-	validateUserId,
 };

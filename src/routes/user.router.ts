@@ -1,6 +1,10 @@
 import { Router } from "express";
 import { isAuthenticated, isAdmin } from "../middleware/auth.middleware";
-import { validateQueries, validateUserId } from "../utils/validation";
+import {
+	validateQueries,
+	validateUserRole,
+	validateUserId,
+} from "../utils/validation";
 import userController from "../controllers/user.controller";
 
 const router = Router();
@@ -20,6 +24,15 @@ router.delete(
 	isAdmin,
 	validateUserId(),
 	userController.deleteUser
+);
+
+router.put(
+	"/:userId",
+	isAuthenticated,
+	isAdmin,
+	validateUserId(),
+	validateUserRole(),
+	userController.updateUserRole
 );
 
 router.get(
