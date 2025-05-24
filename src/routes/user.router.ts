@@ -4,6 +4,8 @@ import {
 	validateQueries,
 	validateUserRole,
 	validateUserId,
+	validateUser,
+	validateLogin,
 } from "../utils/validation";
 import userController from "../controllers/user.controller";
 
@@ -42,5 +44,8 @@ router.get(
 	validateQueries(),
 	userController.getUsers
 );
+
+router.post("/", validateUser(), userController.createUser);
+router.post("/authenticate", validateLogin(), userController.authenticate);
 
 export default router;
