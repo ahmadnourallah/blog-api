@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 class ServerError extends Error {
 	public code;
 
-	constructor(message: string, code: number = 422) {
+	constructor(message: string, code: number = 500) {
 		super(message);
 		this.code = code;
 	}
@@ -46,9 +46,9 @@ const serverErrorHandler = (
 	res: Response,
 	next: NextFunction
 ) => {
-	res.status(err.code).json({
+	res.status(err.code || 500).json({
 		status: "error",
-		code: err.code,
+		code: err.code || 500,
 		message: "Internal server error",
 	});
 };
