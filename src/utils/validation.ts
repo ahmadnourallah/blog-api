@@ -1,15 +1,22 @@
 import { NextFunction, Request, Response } from "express";
 import { ClientError } from "../middleware/error.middleware";
-import {
-	validationResult,
-	query,
-	param,
-	body,
-	matchedData,
-} from "express-validator";
+import { validationResult, query, param, body } from "express-validator";
 import { PrismaClient } from "../prisma/src/db/index";
 
 const prisma = new PrismaClient();
+
+const validateResults = (req: Request, res: Response, next: NextFunction) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty())
+		throw new ClientError(
+			errors
+				.formatWith(({ path, msg }) => {
+					return { [path]: msg };
+				})
+				.array()
+		);
+	next();
+};
 
 const validateUser = () => [
 	body("name").trim().escape().notEmpty().withMessage("Name cannot be empty"),
@@ -37,6 +44,7 @@ const validateUser = () => [
 		.withMessage("Password must contain a number")
 		.matches("(?=.*?[#@$?])")
 		.withMessage("Password must contain a special character"),
+	validateResults,
 ];
 
 const validateUserRole = () => [
@@ -49,11 +57,13 @@ const validateUserRole = () => [
 		.withMessage("Role must be a string")
 		.custom((role) => role === "ADMIN" || role === "VISITOR")
 		.withMessage("Role must be ADMIN or VISITOR"),
+	validateResults,
 ];
 
 const validateLogin = () => [
 	body("email").trim().notEmpty().withMessage("Email cannot be empty"),
 	body("password").trim().notEmpty().withMessage("Password cannot be empty"),
+	validateResults,
 ];
 
 const validateQueries = () => [
@@ -97,6 +107,7 @@ const validateQueries = () => [
 		.escape()
 		.custom((order) => order === "asc" || order === "desc")
 		.withMessage("Order must be asc or desc"),
+	validateResults,
 ];
 
 const validatePost = (validateId = false) => [
@@ -145,6 +156,7 @@ const validatePost = (validateId = false) => [
 		.toArray()
 		.isArray()
 		.withMessage("Categories must be an array"),
+	validateResults,
 ];
 
 const validatePostId = () => [
@@ -159,13 +171,15 @@ const validatePostId = () => [
 		.withMessage("Post's id must be a number")
 		.bail(),
 
+	validateResults,
+
 	async (req: Request, res: Response, next: NextFunction) => {
 		const postExists = await prisma.post.findUnique({
 			where: { id: req?.params?.postId as unknown as number },
 		});
 
 		if (!postExists)
-			throw new ClientError({ postId: "Post does not exist" }, 404);
+			throw new ClientError({ resource: "Resource not found" }, 404);
 		next();
 	},
 ];
@@ -204,6 +218,7 @@ const validateCategory = (validateId = false) => [
 				if (!postExists) throw new Error("Some posts don't exist");
 			}
 		}),
+	validateResults,
 ];
 
 const validateCategoryId = () => [
@@ -218,16 +233,15 @@ const validateCategoryId = () => [
 		.withMessage("Category's id must be a number")
 		.bail(),
 
+	validateResults,
+
 	async (req: Request, res: Response, next: NextFunction) => {
 		const categoryExists = await prisma.category.findUnique({
 			where: { id: req?.params?.categoryId as unknown as number },
 		});
 
 		if (!categoryExists)
-			throw new ClientError(
-				{ categoryId: "Category does not exist" },
-				404
-			);
+			throw new ClientError({ resource: "Resource not found" }, 404);
 		next();
 	},
 ];
@@ -289,6 +303,8 @@ const validateComment = () => [
 			if (!userExists) throw new Error("Author does not exist");
 		}),
 
+	validateResults,
+
 	async (req: Request, res: Response, next: NextFunction) => {
 		if (
 			req?.body?.authorId !== req?.user?.id &&
@@ -313,13 +329,15 @@ const validateCommentId = (validateUser = false) => [
 		.withMessage("Comment's id must be a number")
 		.bail(),
 
+	validateResults,
+
 	async (req: Request, res: Response, next: NextFunction) => {
 		const commentExists = await prisma.comment.findUnique({
 			where: { id: req?.params?.commentId as unknown as number },
 		});
 
 		if (!commentExists)
-			throw new ClientError({ commentId: "Comment does not exist" }, 404);
+			throw new ClientError({ resource: "Resource not found" }, 404);
 		if (
 			validateUser &&
 			commentExists?.authorId !== req?.user?.id &&
@@ -345,30 +363,18 @@ const validateUserId = () => [
 		.withMessage("User's id must be a number")
 		.bail(),
 
+	validateResults,
+
 	async (req: Request, res: Response, next: NextFunction) => {
 		const userExists = await prisma.user.findUnique({
 			where: { id: req?.params?.userId as unknown as number },
 		});
 
 		if (!userExists)
-			throw new ClientError({ userId: "User does not exist" }, 404);
+			throw new ClientError({ resource: "Resource not found" }, 404);
 		next();
 	},
 ];
-
-const validateResults = (req: Request) => {
-	const errors = validationResult(req);
-	if (!errors.isEmpty())
-		throw new ClientError(
-			errors
-				.formatWith(({ path, msg }) => {
-					return { [path]: msg };
-				})
-				.array()
-		);
-
-	return matchedData(req);
-};
 
 export {
 	validateUser,

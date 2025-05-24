@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "../prisma/src/db";
-import { validateResults } from "../utils/validation";
+import { matchedData } from "express-validator";
 
 const prisma = new PrismaClient();
 
 const getCategories = async (req: Request, res: Response) => {
-	const { start, end, search, orderBy, order } = validateResults(req);
+	const { start, end, search, orderBy, order } = matchedData(req);
 
 	const categories = await prisma.category.findMany({
 		where: {
@@ -25,7 +25,7 @@ const getCategories = async (req: Request, res: Response) => {
 };
 
 const getCategory = async (req: Request, res: Response) => {
-	const { categoryId } = validateResults(req);
+	const { categoryId } = matchedData(req);
 
 	const category = await prisma.category.findUnique({
 		where: { id: categoryId },
@@ -38,8 +38,7 @@ const getCategory = async (req: Request, res: Response) => {
 };
 
 const getCategoryPosts = async (req: Request, res: Response) => {
-	const { start, end, search, order, orderBy, categoryId } =
-		validateResults(req);
+	const { start, end, search, order, orderBy, categoryId } = matchedData(req);
 
 	const posts = await prisma.post.findMany({
 		where: {
@@ -71,7 +70,7 @@ const getCategoryPosts = async (req: Request, res: Response) => {
 };
 
 const createCategory = async (req: Request, res: Response) => {
-	const { name, posts } = validateResults(req);
+	const { name, posts } = matchedData(req);
 
 	const newPosts =
 		posts &&
@@ -92,7 +91,7 @@ const createCategory = async (req: Request, res: Response) => {
 };
 
 const updateCategory = async (req: Request, res: Response) => {
-	const { categoryId, name, posts } = validateResults(req);
+	const { categoryId, name, posts } = matchedData(req);
 
 	let newPosts;
 	let excludedPosts;
@@ -135,7 +134,7 @@ const updateCategory = async (req: Request, res: Response) => {
 };
 
 const deleteCategory = async (req: Request, res: Response) => {
-	const { categoryId } = validateResults(req);
+	const { categoryId } = matchedData(req);
 
 	await prisma.category.delete({ where: { id: categoryId } });
 

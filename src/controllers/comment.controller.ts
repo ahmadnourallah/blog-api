@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "../prisma/src/db";
-import { validateResults } from "../utils/validation";
+import { matchedData } from "express-validator";
 
 const prisma = new PrismaClient();
 
 const getComments = async (req: Request, res: Response) => {
-	const { start, end, search, order } = validateResults(req);
+	const { start, end, search, order } = matchedData(req);
 
 	const comments = await prisma.comment.findMany({
 		where: {
@@ -25,7 +25,7 @@ const getComments = async (req: Request, res: Response) => {
 };
 
 const getComment = async (req: Request, res: Response) => {
-	const { commentId } = validateResults(req);
+	const { commentId } = matchedData(req);
 
 	const comment = await prisma.comment.findUnique({
 		where: { id: commentId },
@@ -39,7 +39,7 @@ const getComment = async (req: Request, res: Response) => {
 };
 
 const createComment = async (req: Request, res: Response) => {
-	const { content, authorId, postId, parentCommentId } = validateResults(req);
+	const { content, authorId, postId, parentCommentId } = matchedData(req);
 
 	const comment = await prisma.comment.create({
 		data: {
@@ -58,7 +58,7 @@ const createComment = async (req: Request, res: Response) => {
 
 const updateComment = async (req: Request, res: Response) => {
 	const { commentId, content, authorId, postId, parentCommentId } =
-		validateResults(req);
+		matchedData(req);
 
 	const comment = await prisma.comment.update({
 		where: {
@@ -82,7 +82,7 @@ const updateComment = async (req: Request, res: Response) => {
 };
 
 const deleteComment = async (req: Request, res: Response) => {
-	const { commentId } = validateResults(req);
+	const { commentId } = matchedData(req);
 
 	await prisma.comment.delete({ where: { id: commentId } });
 

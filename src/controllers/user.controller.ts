@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "../prisma/src/db";
-import { validateResults } from "../utils/validation";
+import { matchedData } from "express-validator";
 import { issueJWT } from "../utils/crypto";
 import { ClientError } from "../middleware/error.middleware";
 import bcryptjs from "bcryptjs";
@@ -8,7 +8,7 @@ import bcryptjs from "bcryptjs";
 const prisma = new PrismaClient();
 
 const getUsers = async (req: Request, res: Response) => {
-	const { start, end, search, order } = validateResults(req);
+	const { start, end, search, order } = matchedData(req);
 
 	const users = await prisma.user.findMany({
 		where: {
@@ -29,7 +29,7 @@ const getUsers = async (req: Request, res: Response) => {
 };
 
 const getUser = async (req: Request, res: Response) => {
-	const { userId } = validateResults(req);
+	const { userId } = matchedData(req);
 
 	const user = await prisma.user.findUnique({
 		where: { id: userId },
@@ -40,7 +40,7 @@ const getUser = async (req: Request, res: Response) => {
 };
 
 const updateUserRole = async (req: Request, res: Response) => {
-	const { userId, role } = validateResults(req);
+	const { userId, role } = matchedData(req);
 
 	const user = await prisma.user.update({
 		where: { id: userId },
@@ -52,7 +52,7 @@ const updateUserRole = async (req: Request, res: Response) => {
 };
 
 const createUser = async (req: Request, res: Response) => {
-	const { name, email, password } = validateResults(req);
+	const { name, email, password } = matchedData(req);
 
 	const hashedPassword = await bcryptjs.hash(password, 10);
 
@@ -67,7 +67,7 @@ const createUser = async (req: Request, res: Response) => {
 };
 
 const deleteUser = async (req: Request, res: Response) => {
-	const { userId } = validateResults(req);
+	const { userId } = matchedData(req);
 
 	await prisma.user.delete({ where: { id: userId } });
 
@@ -75,7 +75,7 @@ const deleteUser = async (req: Request, res: Response) => {
 };
 
 const authenticate = async (req: Request, res: Response) => {
-	const { email, password } = validateResults(req);
+	const { email, password } = matchedData(req);
 
 	const user = await prisma.user.findUnique({
 		where: { email },

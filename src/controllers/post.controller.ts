@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "../prisma/src/db/index";
-import { validateResults } from "../utils/validation";
+import { matchedData } from "express-validator";
 
 const prisma = new PrismaClient();
 
 const getPosts = async (req: Request, res: Response) => {
-	const { start, end, search, orderBy, order } = validateResults(req);
+	const { start, end, search, orderBy, order } = matchedData(req);
 
 	const posts = await prisma.post.findMany({
 		where: {
@@ -32,7 +32,7 @@ const getPosts = async (req: Request, res: Response) => {
 };
 
 const getPost = async (req: Request, res: Response) => {
-	const { postId } = validateResults(req);
+	const { postId } = matchedData(req);
 
 	const post = await prisma.post.findUnique({
 		where: { id: postId },
@@ -46,7 +46,7 @@ const getPost = async (req: Request, res: Response) => {
 };
 
 const getPostComments = async (req: Request, res: Response) => {
-	const { postId, start, end, search, order } = validateResults(req);
+	const { postId, start, end, search, order } = matchedData(req);
 
 	const comments = await prisma.comment.findMany({
 		where: {
@@ -71,7 +71,7 @@ const getPostComments = async (req: Request, res: Response) => {
 };
 
 const createPost = async (req: Request, res: Response) => {
-	const { title, content, authorId, categories } = validateResults(req);
+	const { title, content, authorId, categories } = matchedData(req);
 
 	const newCategories =
 		categories &&
@@ -102,8 +102,7 @@ const createPost = async (req: Request, res: Response) => {
 };
 
 const updatePost = async (req: Request, res: Response) => {
-	const { postId, title, content, authorId, categories } =
-		validateResults(req);
+	const { postId, title, content, authorId, categories } = matchedData(req);
 
 	let newCategories;
 	let excludedCategories;
@@ -150,7 +149,7 @@ const updatePost = async (req: Request, res: Response) => {
 };
 
 const deletePost = async (req: Request, res: Response) => {
-	const { postId } = validateResults(req);
+	const { postId } = matchedData(req);
 
 	await prisma.post.delete({ where: { id: postId } });
 
