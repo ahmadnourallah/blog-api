@@ -1,0 +1,256 @@
+/posts:
+    get:
+        tags:
+            - Post
+        summary: Get all posts
+        description: Retrieves all posts created by any user
+
+        responses:
+            200:
+                description: OK
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                status:
+                                    type: string
+                                    example: success
+                                data:
+                                    type: object
+                                    properties:
+                                        count:
+                                            type: integer
+                                            example: 1
+                                        posts:
+                                            type: array
+                                            items:
+                                                allOf:
+                                                    - $ref: "#/components/schemas/Post"
+                                                    - type: object
+                                                      properties:
+                                                          author:
+                                                              $ref: "#/components/schemas/User"
+                                                          categories:
+                                                              type: array
+                                                              items:
+                                                                  $ref: "#/components/schemas/Category"
+
+        parameters:
+            - $ref: "#/components/parameters/start"
+            - $ref: "#/components/parameters/end"
+            - $ref: "#/components/parameters/search"
+            - $ref: "#/components/parameters/order"
+            - $ref: "#/components/parameters/orderBy"
+
+    post:
+        tags:
+            - Post
+        summary: Create a post
+        description: Creates a new post in the database. Only users with role of ADMIN can carry out the operation.
+        security:
+            - bearerAuth: []
+
+        requestBody:
+            description: The *categories* field must be an array of existent category names.
+            required: true
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/Post"
+                            - properties:
+                                  categories:
+                                      type: array
+                                      required: false
+                                      items:
+                                          type: string
+
+        responses:
+            201:
+                description: Created
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                status:
+                                    type: string
+                                    example: success
+                                data:
+                                    type: object
+                                    properties:
+                                        : allOf:
+                                              - $ref: "#/components/schemas/Post"
+                                              - type: object
+                                                properties:
+                                                    author:
+                                                        $ref: "#/components/schemas/User"
+                                                    categories:
+                                                        type: array
+                                                        required: false
+                                                        items:
+                                                            type: string
+
+            422:
+                $ref: "#/components/responses/ValidationError"
+
+/posts/{postId}:
+    get:
+        tags:
+            - Post
+        summary: Get a post
+        description: Retrieves a post by an id
+
+        responses:
+            200:
+                description: OK
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                status:
+                                    type: string
+                                    example: success
+                                data:
+                                    type: object
+                                    properties:
+                                        count:
+                                            type: integer
+                                            example: 1
+                                        post:
+                                            allOf:
+                                                - $ref: "#/components/schemas/Post"
+                                                - type: object
+                                                  properties:
+                                                      author:
+                                                          $ref: "#/components/schemas/User"
+                                                      categories:
+                                                          type: array
+                                                          items:
+                                                              $ref: "#/components/schemas/Category"
+
+            404:
+                $ref: "#/components/responses/NotFoundError"
+
+            422:
+                $ref: "#/components/responses/ValidationError"
+
+    put:
+        tags:
+            - Post
+        summary: Update a post
+        description: Updates a post by an id. Only users with role of ADMIN can carry out the operation.
+        security:
+            - bearerAuth: []
+
+        requestBody:
+            description: The *categories* field must be an array of existent category names.
+            required: true
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/Post"
+                            - properties:
+                                  categories:
+                                      type: array
+                                      required: false
+                                      items:
+                                          type: string
+
+        responses:
+            200:
+                description: Updated
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                status:
+                                    type: string
+                                    example: success
+                                data:
+                                    type: object
+                                    properties:
+                                        count:
+                                            type: integer
+                                            example: 1
+                                        post:
+                                            allOf:
+                                                - $ref: "#/components/schemas/Post"
+                                                - type: object
+                                                  properties:
+                                                      author:
+                                                          $ref: "#/components/schemas/User"
+                                                      categories:
+                                                          type: array
+                                                          items:
+                                                              $ref: "#/components/schemas/Category"
+
+            404:
+                $ref: "#/components/responses/NotFoundError"
+
+            422:
+                $ref: "#/components/responses/ValidationError"
+
+    delete:
+        tags:
+            - Post
+        summary: Delete a post
+        description: Deletes a post by an id. Only users with role of ADMIN can carry out the operation.
+        security:
+            - bearerAuth: []
+
+        responses:
+            200:
+                description: Deleted
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                status:
+                                    type: string
+                                    example: success
+                                data:
+                                    type: object
+
+            404:
+                $ref: "#/components/responses/NotFoundError"
+
+            422:
+                $ref: "#/components/responses/ValidationError"
+
+/posts/{postId}/comments:
+    get:
+        tags:
+            - Post
+        summary: Get a post's comments
+        description: Retrieves a post's comments by an id
+
+        responses:
+            200:
+                description: OK
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                status:
+                                    type: string
+                                    example: success
+                                data:
+                                    type: object
+                                    properties:
+                                        comments:
+                                            type: array
+                                            items:
+                                                $ref: "#/components/schemas/Comment"
+
+            404:
+                $ref: "#/components/responses/NotFoundError"
+
+            422:
+                $ref: "#/components/responses/ValidationError"
