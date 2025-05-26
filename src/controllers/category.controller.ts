@@ -58,8 +58,16 @@ const getCategoryPosts = async (req: Request, res: Response) => {
 			[orderBy === "title" ? "title" : "createdAt"]: order,
 		},
 		include: {
-			author: { select: { name: true, email: true, bio: true } },
-			categories: { select: { id: true, name: true } },
+			author: {
+				select: {
+					id: true,
+					name: true,
+					email: true,
+					bio: true,
+					role: true,
+				},
+			},
+			categories: true,
 		},
 	});
 
