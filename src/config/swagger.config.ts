@@ -17,11 +17,6 @@ const options: swaggerJSDoc.Options = {
 				},
 			},
 		},
-		security: [
-			{
-				bearerAuth: [],
-			},
-		],
 	},
 	apis: ["./src/specs/*.yaml"],
 	components: ["./src/specs/*.yaml"],
