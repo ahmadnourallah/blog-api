@@ -1,0 +1,68 @@
+components:
+    parameters:
+        start:
+            in: query
+            name: start
+            min: 0
+            default: 0
+            schema:
+                type: integer
+            description: The starting point of retrieving resources
+
+        end:
+            in: query
+            name: end
+            default: 10
+            schema:
+                type: integer
+            description: Where to stop retrieving resources
+
+        search:
+            in: query
+            name: search
+            schema:
+                type: string
+            description: The query to filter resources
+
+        orderBy:
+            in: query
+            name: orderBy
+            default: date
+            schema:
+                type: string
+                enum:
+                    - date
+                    - title
+            description: The field by which resources will be ordered
+
+        orderByName:
+            in: query
+            name: orderBy
+            default: date
+            schema:
+                type: string
+                enum:
+                    - date
+                    - name
+            description: The field by which resources will be ordered
+
+        orderByDate:
+            in: query
+            name: orderBy
+            default: date
+            schema:
+                type: string
+                enum:
+                    - date
+            description: The field by which resources will be ordered
+
+        order:
+            in: query
+            name: order
+            default: asc
+            schema:
+                type: string
+                enum:
+                    - asc
+                    - desc
+            description: The order of the retrieved resources (ascending or descending)
