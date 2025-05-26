@@ -18,7 +18,7 @@ const getCategories = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(200).send({
+	res.status(200).json({
 		status: "success",
 		data: { count: categories.length, categories },
 	});
@@ -34,7 +34,7 @@ const getCategory = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(200).send({ status: "success", data: { category } });
+	res.status(200).json({ status: "success", data: { category } });
 };
 
 const getCategoryPosts = async (req: Request, res: Response) => {
@@ -71,7 +71,7 @@ const getCategoryPosts = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(200).send({
+	res.status(200).json({
 		status: "success",
 		data: { count: posts.length, posts },
 	});
@@ -138,7 +138,7 @@ const updateCategory = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(200).send({ status: "success", data: { category } });
+	res.status(200).json({ status: "success", data: { category } });
 };
 
 const deleteCategory = async (req: Request, res: Response) => {

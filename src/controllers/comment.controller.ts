@@ -18,7 +18,7 @@ const getComments = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(200).send({
+	res.status(200).json({
 		status: "success",
 		data: { count: comments.length, comments },
 	});
@@ -35,7 +35,7 @@ const getComment = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(200).send({ status: "success", data: { comment } });
+	res.status(200).json({ status: "success", data: { comment } });
 };
 
 const createComment = async (req: Request, res: Response) => {
@@ -78,7 +78,7 @@ const updateComment = async (req: Request, res: Response) => {
 		include: { replies: true },
 	});
 
-	res.status(200).send({ status: "success", data: { comment } });
+	res.status(200).json({ status: "success", data: { comment } });
 };
 
 const deleteComment = async (req: Request, res: Response) => {

@@ -25,7 +25,7 @@ const getPosts = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(200).send({
+	res.status(200).json({
 		status: "success",
 		data: { count: posts.length, posts },
 	});
@@ -42,7 +42,7 @@ const getPost = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(200).send({ status: "success", data: { post } });
+	res.status(200).json({ status: "success", data: { post } });
 };
 
 const getPostComments = async (req: Request, res: Response) => {
@@ -64,7 +64,7 @@ const getPostComments = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(200).send({
+	res.status(200).json({
 		status: "success",
 		data: { count: comments.length, comments },
 	});

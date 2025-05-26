@@ -22,7 +22,7 @@ const getUsers = async (req: Request, res: Response) => {
 		select: { id: true, name: true, email: true, role: true, bio: true },
 	});
 
-	res.status(200).send({
+	res.status(200).json({
 		status: "success",
 		data: { count: users.length, users },
 	});
@@ -36,7 +36,7 @@ const getUser = async (req: Request, res: Response) => {
 		select: { id: true, name: true, email: true, role: true, bio: true },
 	});
 
-	res.status(200).send({ status: "success", data: { user } });
+	res.status(200).json({ status: "success", data: { user } });
 };
 
 const updateUserRole = async (req: Request, res: Response) => {
@@ -48,7 +48,7 @@ const updateUserRole = async (req: Request, res: Response) => {
 		select: { id: true, name: true, email: true, role: true },
 	});
 
-	res.status(200).send({ status: "success", data: { user } });
+	res.status(200).json({ status: "success", data: { user } });
 };
 
 const createUser = async (req: Request, res: Response) => {
