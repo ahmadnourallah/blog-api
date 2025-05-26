@@ -1,0 +1,70 @@
+components:
+    schemas:
+        User:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    readOnly: true
+                name:
+                    type: string
+                email:
+                    type: string
+                password:
+                    type: string
+                    writeOnly: true
+                bio:
+                    type: string
+                    required: false
+                role:
+                    type: string
+                    readOnly: true
+
+        Post:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    readOnly: true
+                title:
+                    type: string
+                content:
+                    type: string
+                createdAt:
+                    type: string
+                    readOnly: true
+                updatedAt:
+                    type: string
+                    readOnly: true
+                authorId:
+                    type: integer
+
+        Comment:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    readOnly: true
+                content:
+                    type: string
+                createdAt:
+                    type: string
+                    readOnly: true
+                authorId:
+                    type: integer
+                postId:
+                    type: integer
+                parentCommentId:
+                    type: integer
+
+        Category:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    readOnly: true
+                name:
+                    type: string
+                createdAt:
+                    type: string
+                    readOnly: true
