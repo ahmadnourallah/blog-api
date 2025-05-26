@@ -30,7 +30,15 @@ const getComment = async (req: Request, res: Response) => {
 	const comment = await prisma.comment.findUnique({
 		where: { id: commentId },
 		include: {
-			author: { select: { name: true, email: true } },
+			author: {
+				select: {
+					id: true,
+					name: true,
+					email: true,
+					bio: true,
+					role: true,
+				},
+			},
 			replies: true,
 		},
 	});
