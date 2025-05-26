@@ -1,0 +1,181 @@
+/comments:
+    get:
+        tags:
+            - Comment
+        summary: Get all comments
+        description: Retrieves all comments created by any user
+
+        responses:
+            200:
+                description: OK
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                status:
+                                    type: string
+                                    example: success
+                                data:
+                                    type: object
+                                    properties:
+                                        count:
+                                            type: integer
+                                            example: 1
+                                        comments:
+                                            type: array
+                                            items:
+                                                $ref: "#/components/schemas/Comment"
+
+        parameters:
+            - $ref: "#/components/parameters/start"
+            - $ref: "#/components/parameters/end"
+            - $ref: "#/components/parameters/search"
+            - $ref: "#/components/parameters/order"
+
+    post:
+        tags:
+            - Comment
+        summary: Create a comment
+        description: Creates a new comment in the database.
+        security:
+            - bearerAuth: []
+
+        requestBody:
+            required: true
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Comment"
+
+        responses:
+            201:
+                description: Created
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                status:
+                                    type: string
+                                    example: success
+                                data:
+                                    type: object
+                                    properties:
+                                        comment:
+                                            $ref: "#/components/schemas/Comment"
+
+            422:
+                $ref: "#/components/responses/ValidationError"
+
+/comments/{commentId}:
+    get:
+        tags:
+            - Comment
+        summary: Get a comment
+        description: Retrieves a comment by an id
+
+        responses:
+            200:
+                description: OK
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                status:
+                                    type: string
+                                    example: success
+                                data:
+                                    type: object
+                                    properties:
+                                        comment:
+                                            allOf:
+                                                - $ref: "#/components/schemas/Comment"
+                                                - type: object
+                                                  properties:
+                                                      author:
+                                                          $ref: "#/components/schemas/User"
+                                                      replies:
+                                                          type: array
+                                                          items:
+                                                              $ref: "#/components/schemas/Comment"
+
+            404:
+                $ref: "#/components/responses/NotFoundError"
+
+            422:
+                $ref: "#/components/responses/ValidationError"
+
+    put:
+        tags:
+            - Comment
+        summary: Update a comment
+        description: Updates a comment by an id.
+        security:
+            - bearerAuth: []
+
+        requestBody:
+            required: true
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Comment"
+
+        responses:
+            200:
+                description: Updated
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                status:
+                                    type: string
+                                    example: success
+                                data:
+                                    type: object
+                                    properties:
+                                        comment:
+                                            allOf:
+                                                - $ref: "#/components/schemas/Comment"
+                                                - type: object
+                                                  properties:
+                                                      replies:
+                                                          type: array
+                                                          items:
+                                                              $ref: "#/components/schemas/Comment"
+
+            404:
+                $ref: "#/components/responses/NotFoundError"
+
+            422:
+                $ref: "#/components/responses/ValidationError"
+
+    delete:
+        tags:
+            - Comment
+        summary: Delete a comment
+        description: Deletes a comment by an id.
+        security:
+            - bearerAuth: []
+
+        responses:
+            200:
+                description: Deleted
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                status:
+                                    type: string
+                                    example: success
+                                data:
+                                    type: object
+
+            404:
+                $ref: "#/components/responses/NotFoundError"
+
+            422:
+                $ref: "#/components/responses/ValidationError"
