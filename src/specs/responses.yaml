@@ -1,0 +1,43 @@
+components:
+    responses:
+        NotFoundError:
+            description: The specified resource was not found.
+
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                                example: fail
+                            code:
+                                type: integer
+                                example: 404
+                            data:
+                                type: object
+                                properties:
+                                    resource:
+                                        type: string
+                                        example: Resource not found
+
+        ValidationError:
+            description: Some parameters are missing or malformed.
+
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                                example: fail
+                            code:
+                                type: integer
+                                example: 422
+                            data:
+                                type: object
+                                additionalProperties:
+                                    type: string
+                                example:
+                                    field: Field must be a number
