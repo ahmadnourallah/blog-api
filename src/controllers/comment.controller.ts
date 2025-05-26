@@ -78,7 +78,7 @@ const updateComment = async (req: Request, res: Response) => {
 		include: { replies: true },
 	});
 
-	res.status(201).send({ status: "success", data: { comment } });
+	res.status(200).send({ status: "success", data: { comment } });
 };
 
 const deleteComment = async (req: Request, res: Response) => {
@@ -86,7 +86,7 @@ const deleteComment = async (req: Request, res: Response) => {
 
 	await prisma.comment.delete({ where: { id: commentId } });
 
-	res.status(201).json({ status: "success", data: null });
+	res.status(200).json({ status: "success", data: null });
 };
 
 export default {

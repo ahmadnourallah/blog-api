@@ -48,7 +48,7 @@ const updateUserRole = async (req: Request, res: Response) => {
 		select: { id: true, name: true, email: true, role: true },
 	});
 
-	res.status(201).send({ status: "success", data: { user } });
+	res.status(200).send({ status: "success", data: { user } });
 };
 
 const createUser = async (req: Request, res: Response) => {
@@ -63,7 +63,7 @@ const createUser = async (req: Request, res: Response) => {
 
 	const token = issueJWT(user);
 
-	res.json({ status: "success", data: { user, token } });
+	res.status(201).json({ status: "success", data: { user, token } });
 };
 
 const deleteUser = async (req: Request, res: Response) => {
@@ -71,7 +71,7 @@ const deleteUser = async (req: Request, res: Response) => {
 
 	await prisma.user.delete({ where: { id: userId } });
 
-	res.status(201).json({ status: "success", data: null });
+	res.status(200).json({ status: "success", data: null });
 };
 
 const authenticate = async (req: Request, res: Response) => {
@@ -88,7 +88,7 @@ const authenticate = async (req: Request, res: Response) => {
 
 	const token = issueJWT(user);
 
-	res.json({ status: "success", data: { user, token } });
+	res.status(200).json({ status: "success", data: { user, token } });
 };
 
 export default {

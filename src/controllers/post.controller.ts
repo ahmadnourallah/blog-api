@@ -145,7 +145,7 @@ const updatePost = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(201).json({ status: "success", data: { post } });
+	res.status(200).json({ status: "success", data: { post } });
 };
 
 const deletePost = async (req: Request, res: Response) => {
@@ -153,7 +153,7 @@ const deletePost = async (req: Request, res: Response) => {
 
 	await prisma.post.delete({ where: { id: postId } });
 
-	res.status(201).json({ status: "success", data: null });
+	res.status(200).json({ status: "success", data: null });
 };
 
 export default {

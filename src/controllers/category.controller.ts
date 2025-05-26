@@ -138,7 +138,7 @@ const updateCategory = async (req: Request, res: Response) => {
 		},
 	});
 
-	res.status(201).send({ status: "success", data: { category } });
+	res.status(200).send({ status: "success", data: { category } });
 };
 
 const deleteCategory = async (req: Request, res: Response) => {
@@ -146,7 +146,7 @@ const deleteCategory = async (req: Request, res: Response) => {
 
 	await prisma.category.delete({ where: { id: categoryId } });
 
-	res.status(201).json({ status: "success", data: null });
+	res.status(200).json({ status: "success", data: null });
 };
 
 export default {
