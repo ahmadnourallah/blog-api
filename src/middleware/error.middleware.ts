@@ -36,8 +36,7 @@ const clientErrorHandler = (
 			code: err.code,
 			data: err.errors,
 		});
-
-	next(err);
+	else next(err);
 };
 
 const serverErrorHandler = (
