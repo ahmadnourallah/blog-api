@@ -6,6 +6,7 @@ import {
 	validatePostId,
 } from "../utils/validation";
 import postController from "../controllers/post.controller";
+import thumbnailUploadMiddleware from "../middleware/thumbnailUploadMiddleware";
 
 const router = Router();
 
@@ -16,6 +17,7 @@ router.put(
 	isAuthenticated,
 	isAdmin,
 	validatePostId(),
+	thumbnailUploadMiddleware,
 	validatePost(true),
 	postController.updatePost
 );
@@ -39,6 +41,7 @@ router.post(
 	"/",
 	isAuthenticated,
 	isAdmin,
+	thumbnailUploadMiddleware,
 	validatePost(),
 	postController.createPost
 );
