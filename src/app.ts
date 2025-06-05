@@ -16,6 +16,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/thumbnails", express.static("thumbnails/"));
 app.use(
 	cors({
 		origin: function (origin: string, callback: Function) {
