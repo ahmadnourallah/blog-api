@@ -38,11 +38,11 @@ model Comment {
   createdAt       DateTime  @default(now())
   author          User      @relation(fields: [authorId], references: [id])
   authorId        Int
-  post            Post      @relation(fields: [postId], references: [id])
+  post            Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId          Int
-  parentComment   Comment?  @relation("parentCommnet", fields: [parentCommentId], references: [id])
+  parentComment   Comment?  @relation("parentComment", fields: [parentCommentId], references: [id], onDelete: Cascade)
   parentCommentId Int?
-  replies         Comment[] @relation("parentCommnet")
+  replies         Comment[] @relation("parentComment")
 }
 
 model Category {
