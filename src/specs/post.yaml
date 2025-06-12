@@ -141,7 +141,9 @@
         tags:
             - Post
         summary: Update a post
-        description: Updates a post by an id. Only users with role of ADMIN can carry out the operation.
+        description:
+            Updates a post by an id. Only users with role of ADMIN can carry out the operation.
+            Do not resend the thumbnail if you do not intend to change it. Resending it would result in creating a duplicate copy of the file.
         security:
             - bearerAuth: []
 

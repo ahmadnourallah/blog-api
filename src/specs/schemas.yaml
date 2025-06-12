@@ -13,12 +13,12 @@ components:
                 password:
                     type: string
                     writeOnly: true
-                bio:
-                    type: string
-                    required: false
                 role:
                     type: string
                     readOnly: true
+                bio:
+                    type: string
+                    required: false
 
         Post:
             type: object
@@ -27,6 +27,8 @@ components:
                     type: integer
                     readOnly: true
                 title:
+                    type: string
+                thumbnail:
                     type: string
                 content:
                     type: string
