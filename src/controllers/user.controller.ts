@@ -77,18 +77,27 @@ const deleteUser = async (req: Request, res: Response) => {
 const authenticate = async (req: Request, res: Response) => {
 	const { email, password } = matchedData(req);
 
-	const user = await prisma.user.findUnique({
-		where: { email },
-		select: { id: true, name: true, email: true, role: true },
-	});
-	const doesMatch = bcryptjs.compare(user?.password || "", password);
+	const user = await prisma.user.findUnique({ where: { email } });
+
+	const doesMatch = await bcryptjs.compare(password, user?.password || "");
 
 	if (!user || !doesMatch)
 		throw new ClientError({ user: "Wrong email or password" }, 401);
 
 	const token = issueJWT(user);
 
-	res.status(200).json({ status: "success", data: { user, token } });
+	res.status(200).json({
+		status: "success",
+		data: {
+			user: {
+				id: user.id,
+				name: user.name,
+				email: user.email,
+				role: user.role,
+				...token
+			},
+		},
+	});
 };
 
 export default {
