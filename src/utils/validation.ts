@@ -19,7 +19,7 @@ const validateResults = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const validateUser = () => [
-	body("name").trim().escape().notEmpty().withMessage("Name cannot be empty"),
+	body("name").trim().notEmpty().withMessage("Name cannot be empty"),
 	body("email")
 		.trim()
 		.escape()
@@ -92,7 +92,6 @@ const validateQueries = () => [
 	query("search")
 		.default("")
 		.trim()
-		.escape()
 		.isString()
 		.withMessage("Search must be a string"),
 	query("orderBy")
@@ -113,7 +112,6 @@ const validateQueries = () => [
 const validatePost = (validateId = false) => [
 	body("title")
 		.trim()
-		.escape()
 		.notEmpty()
 		.withMessage("Title cannot be empty")
 		.isString()
@@ -127,7 +125,6 @@ const validatePost = (validateId = false) => [
 		}),
 	body("content")
 		.trim()
-		.escape()
 		.notEmpty()
 		.withMessage("Content cannot be empty")
 		.isString()
@@ -151,7 +148,6 @@ const validatePost = (validateId = false) => [
 		}),
 	body("categories")
 		.trim()
-		.escape()
 		.optional()
 		.toArray()
 		.isArray()
@@ -187,7 +183,6 @@ const validatePostId = () => [
 const validateCategory = (validateId = false) => [
 	body("name")
 		.trim()
-		.escape()
 		.notEmpty()
 		.withMessage("Category cannot be empty")
 		.bail()
@@ -203,7 +198,6 @@ const validateCategory = (validateId = false) => [
 		}),
 	body("posts")
 		.trim()
-		.escape()
 		.optional()
 		.toArray()
 		.isArray()
@@ -249,7 +243,6 @@ const validateCategoryId = () => [
 const validateComment = () => [
 	body("content")
 		.trim()
-		.escape()
 		.notEmpty()
 		.withMessage("Content cannot be empty")
 		.isString()
