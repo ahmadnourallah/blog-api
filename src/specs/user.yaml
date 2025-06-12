@@ -1,0 +1,223 @@
+/users:
+    get:
+        tags:
+            - User
+        summary: Get all users
+        description: Retrieves all existing users. Only users with role of ADMIN can carry out this operation.
+        security:
+            - bearerAuth: []
+
+        responses:
+            200:
+                description: OK
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                status:
+                                    type: string
+                                    example: success
+                                data:
+                                    type: object
+                                    properties:
+                                        count:
+                                            type: integer
+                                            example: 1
+                                        users:
+                                            type: array
+                                            items:
+                                                $ref: "#/components/schemas/User"
+
+        parameters:
+            - $ref: "#/components/parameters/start"
+            - $ref: "#/components/parameters/end"
+            - $ref: "#/components/parameters/search"
+            - $ref: "#/components/parameters/order"
+
+    post:
+        tags:
+            - User
+        summary: Create a user
+        description: Creates a new user in the database.
+        security:
+            - bearerAuth: []
+
+        requestBody:
+            required: true
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/User"
+
+        responses:
+            201:
+                description: Created
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                status:
+                                    type: string
+                                    example: success
+                                data:
+                                    type: object
+                                    properties:
+                                        user:
+                                            allOf:
+                                                - $ref: "#/components/schemas/User"
+                                                - type: object
+                                                  properties:
+                                                      token:
+                                                          type: string
+                                                      expiresIn:
+                                                          type: string
+
+            422:
+                $ref: "#/components/responses/ValidationError"
+
+/users/{userId}:
+    get:
+        tags:
+            - User
+        summary: Get a user
+        description: Retrieves a user by an id. Only users with role of ADMIN can carry out this operation.
+
+        responses:
+            200:
+                description: OK
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                status:
+                                    type: string
+                                    example: success
+                                data:
+                                    type: object
+                                    properties:
+                                        user:
+                                            $ref: "#/components/schemas/User"
+
+            404:
+                $ref: "#/components/responses/NotFoundError"
+
+            422:
+                $ref: "#/components/responses/ValidationError"
+
+    put:
+        tags:
+            - User
+        summary: Update a user's role
+        description: Updates a user's role by an id.
+        security:
+            - bearerAuth: []
+
+        requestBody:
+            required: true
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/User"
+
+        responses:
+            200:
+                description: Updated
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                status:
+                                    type: string
+                                    example: success
+                                data:
+                                    type: object
+                                    properties:
+                                        user:
+                                            $ref: "#/components/schemas/User"
+
+            404:
+                $ref: "#/components/responses/NotFoundError"
+
+            422:
+                $ref: "#/components/responses/ValidationError"
+
+    delete:
+        tags:
+            - User
+        summary: Delete a user
+        description: Deletes a user by an id. Only users with role of ADMIN can carry out this operation.
+        security:
+            - bearerAuth: []
+
+        responses:
+            200:
+                description: Deleted
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                status:
+                                    type: string
+                                    example: success
+                                data:
+                                    type: object
+
+            404:
+                $ref: "#/components/responses/NotFoundError"
+
+            422:
+                $ref: "#/components/responses/ValidationError"
+
+/users/authenticate:
+    post:
+        tags:
+            - User
+        summary: Get JWT token
+        description: Obtains a JWT by entering credentials.
+
+        requestBody:
+            required: true
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            email:
+                                type: string
+                            password:
+                                type: string
+
+        responses:
+            200:
+                description: OK
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                status:
+                                    type: string
+                                    example: success
+                                data:
+                                    type: object
+                                    properties:
+                                        user:
+                                            allOf:
+                                                - $ref: "#/components/schemas/User"
+                                                - type: object
+                                                  properties:
+                                                      token:
+                                                          type: string
+                                                      expiresIn:
+                                                          type: string
+
+            404:
+                $ref: "#/components/responses/NotFoundError"
+
+            422:
+                $ref: "#/components/responses/ValidationError"
