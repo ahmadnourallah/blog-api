@@ -93,7 +93,7 @@ const createPost = async (req: Request, res: Response) => {
 	const post = await prisma.post.create({
 		data: {
 			title,
-			thumbnail: req.file?.filename,
+			thumbnail: req.file?.path,
 			content,
 			authorId,
 			categories: {
@@ -148,7 +148,7 @@ const updatePost = async (req: Request, res: Response) => {
 		},
 		data: {
 			title,
-			thumbnail: req.file?.filename,
+			thumbnail: req.file?.path,
 			content,
 			authorId,
 			categories: {
